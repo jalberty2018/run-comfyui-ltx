@@ -10,7 +10,7 @@ A streamlined and automated environment for running **ComfyUI** with **LTX-2 vid
 
 ## 🔧 Features
 
-- Automatic model and LoRA downloads via environment variables.
+- Automatic model and LoRA downloads via environment variables or lora-manager.
 - Built-in **authentication** for:
   - ComfyUI
   - Code Server
@@ -23,11 +23,11 @@ A streamlined and automated environment for running **ComfyUI** with **LTX-2 vid
 
 ### Deployment.
 
-- All available templates on runpod are tested on a L40S/A40.
+- All available templates on runpod are tested on a L40S.
 
 ### Runpod templates
 
-[**👉 One-click Deploy on RunPod LTX-2**](test)
+[**👉 One-click Deploy on RunPod LTX-2**](https://console.runpod.io/deploy?template=p4f6rm9tb4&ref=se4tkc5o)
 
 ### Documentation
 
