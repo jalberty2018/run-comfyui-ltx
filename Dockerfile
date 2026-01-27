@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
-# run-comfyui-wan2
-FROM ls250824/comfyui-runtime:16012026
+# run-comfyui-ltx
+FROM ls250824/comfyui-runtime:27012026
 
 # Set Working Directory
 WORKDIR /ComfyUI
@@ -47,7 +47,9 @@ RUN --mount=type=cache,target=/root/.cache/git \
 	git clone --depth=1 --filter=blob:none https://github.com/Windecay/ComfyUI_Dynamic-RAMCache.git && \
     git clone --depth=1 --filter=blob:none https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/rethink-studios/comfyui-model-linker-desktop.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git
+	git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterLTXV2.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterVideoCombine.git 
 
 # Rewrite any top-level CPU ORT refs to GPU ORT
 RUN set -eux; \
@@ -80,6 +82,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Activate SAM3
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-SAM3
+RUN git fetch --unshallow && git checkout a5e2ceb66d95dc74151669ef83f594265ed62caa
 RUN python install.py
 
 # Add settings for lora manager 
@@ -118,7 +121,7 @@ WORKDIR /workspace
 EXPOSE 8188 9000
 
 # Labels
-LABEL org.opencontainers.image.title="ComfyUI 0.9.1 for LTX-2 inference" \
+LABEL org.opencontainers.image.title="ComfyUI 0.11.0 for LTX-2 inference" \
       org.opencontainers.image.description="ComfyUI + internal manager + flash-attn + sageattention + onnxruntime-gpu + torch_generic_nms + code-server + civitai downloader + huggingface_hub + custom_nodes" \
       org.opencontainers.image.source="https://hub.docker.com/r/ls250824/run-comfyui-wan2" \
       org.opencontainers.image.licenses="MIT"
