@@ -4,7 +4,7 @@
 
 ![Pod running on L40S native comfyUI](images/runpod_L40S_LTX.jpg)
 
-![Workflow t2v](images/ai-generated-ltx.jpg)
+![Workflow t2v](images/ai-generated-LTX.jpg)
 
 A streamlined and automated environment for running **ComfyUI** with **LTX-2 video models**, optimized for use on RunPod
 
