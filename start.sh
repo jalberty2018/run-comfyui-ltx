@@ -21,8 +21,8 @@ if [[ -n "${RUNPOD_GPU_COUNT:-}" ]]; then
 fi
 
 # Move necessary files to workspace
-echo "ℹ️ [Moving necessary files to workspace] enabling Start/Stop/Restart pod without data loss"
-echo "ℹ️ This takes some time on slower processors, longer if the volume is encrypted"    
+echo "ℹ️ [Moving necessary files to workspace] enabling Start/Stop/Restart pod without data loss."
+echo "ℹ️ This takes some time on slower processors, longer if the volume is encrypted."    
 
 for script in comfyui-on-workspace.sh files-on-workspace.sh test-on-workspace.sh docs-on-workspace.sh; do
     if [ -f "/$script" ]; then
@@ -35,10 +35,6 @@ done
 
 # Create output directory for cloud transfer
 mkdir -p /workspace/output/
-
-# Set optimizations
-export PYTORCH_ALLOC_CONF=expandable_segments:True,garbage_collection_threshold:0.8
-export COMFYUI_VRAM_MODE=HIGH_VRAM
 
 # GPU detection
 echo "ℹ️ Testing GPU/CUDA provisioning"
@@ -376,7 +372,10 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
       "LATENT_UPSCALE:LATENT_UPSCALE_FILENAME:latent_upscale_models"
       "VAE_APPROX:VAE_APPROX_FILENAME:vae_approx"
     )
-	
+
+    # Set optimizations
+    export PYTORCH_ALLOC_CONF=expandable_segments:True,garbage_collection_threshold:0.8
+    
     # Huggingface download file depending on VRAM available to specified directory
 
     get_max_vram_gib() {
@@ -395,6 +394,7 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
 
     if (( MAX_VRAM_GIB > 40 )); then
        HF_PREFIX="HF_MODEL_HVRAM_"
+       export COMFYUI_VRAM_MODE=HIGH_VRAM
        echo "🟢 High VRAM detected (${MAX_VRAM_GIB} GB)"
     else
        HF_PREFIX="HF_MODEL_LVRAM_"

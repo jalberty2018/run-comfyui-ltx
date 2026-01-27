@@ -123,7 +123,7 @@ hf download Lightricks/LTX-2 ltx-2-spatial-upscaler-x2-1.0.safetensors \
 --local-dir /workspace/ComfyUI/models/latent_upscale_models/
 ```
 
-## Loras 
+## Distill loras
 
 ### 384
 
@@ -151,6 +151,15 @@ download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora-resized_dynamic_fro095
 download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
+
+### rank 175 fp8
+
+```bash
+download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_fp8.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
+
+## Loras
 
 ### Detailer
 
