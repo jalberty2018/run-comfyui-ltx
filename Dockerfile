@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 # run-comfyui-ltx
-FROM ls250824/comfyui-runtime:27012026
+FROM ls250824/comfyui-runtime:11022026
 
 # Set Working Directory
 WORKDIR /ComfyUI
@@ -59,6 +59,10 @@ RUN set -eux; \
       sed -i -E 's/^( *| *)(onnxruntime)([<>=].*)?(\s*)$/\1onnxruntime-gpu==1.22.*\4/i' "$f"; \
     done
 
+# Pixi problem SAM3
+RUN sed -i '/^comfy-env/d' /ComfyUI/custom_nodes/ComfyUI-SAM3/requirements.txt
+RUN sed -i '/^comfy-test/d' /ComfyUI/custom_nodes/ComfyUI-SAM3/requirements.txt
+
 # Install Dependencies for Cloned Repositories
 WORKDIR /ComfyUI/custom_nodes
 
@@ -78,12 +82,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 	-r ComfyUI-JoyCaption/requirements_gguf.txt \
 	-r ComfyUI-outputlists-combiner/requirements.txt \
 	-r ComfyUI-LTXVideo/requirements.txt \
-    -r ComfyUI-Lora-Manager/requirements.txt
+    -r ComfyUI-Lora-Manager/requirements.txt \
+	-r ComfyUI-SAM3/requirements.txt 
 
 # Activate SAM3
-WORKDIR /ComfyUI/custom_nodes/ComfyUI-SAM3
-RUN git fetch --unshallow && git checkout a5e2ceb66d95dc74151669ef83f594265ed62caa
-RUN python install.py
+# WORKDIR /ComfyUI/custom_nodes/ComfyUI-SAM3
+# RUN git fetch --unshallow && git checkout a5e2ceb66d95dc74151669ef83f594265ed62caa
+# RUN python install.py
 
 # Add settings for lora manager 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-Lora-Manager
@@ -121,7 +126,7 @@ WORKDIR /workspace
 EXPOSE 8188 9000
 
 # Labels
-LABEL org.opencontainers.image.title="ComfyUI 0.11.0 for LTX-2 inference" \
+LABEL org.opencontainers.image.title="ComfyUI 0.13.0 for LTX-2 inference" \
       org.opencontainers.image.description="ComfyUI + internal manager + flash-attn + sageattention + onnxruntime-gpu + torch_generic_nms + code-server + civitai downloader + huggingface_hub + custom_nodes" \
       org.opencontainers.image.source="https://hub.docker.com/r/ls250824/run-comfyui-wan2" \
       org.opencontainers.image.licenses="MIT"

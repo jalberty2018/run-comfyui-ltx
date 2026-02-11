@@ -2,9 +2,17 @@
 
 # 🚀 Run LTX-2 with ComfyUI with provisioning — RunPod
 
+## bf16
+
 ![Pod running on L40S native comfyUI](images/runpod_L40S_LTX.jpg)
 
-![Workflow t2v](images/ai-generated-LTX.jpg)
+## fp8
+
+![Pod running on RTX A5000 native comfyUI](images/runpod_A5000_LTX.jpeg)
+
+## Workflow i2v/t2v
+
+![Workflow i2v](images/ai-generated-LTX.jpg)
 
 A streamlined and automated environment for running **ComfyUI** with **LTX-2 video models**, optimized for use on RunPod
 
