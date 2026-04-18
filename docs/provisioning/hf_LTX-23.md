@@ -1,7 +1,10 @@
 # Manual provisioning LTX-2.3
 
 - [Kajai](https://huggingface.co/Kijai/LTX2.3_comfy)
-- [Lightx2v](https://huggingface.co/Lightricks/LTX-2.3)
+- [Lightricks](https://huggingface.co/Lightricks/LTX-2.3)
+- [Union-Control](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Union-Control)
+- [Motion-Track-Control](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control)
+- [Cameraman](https://huggingface.co/Cseti/LTX2.3-22B_IC-LoRA-Cameraman_v1)
 
 ## Diffusion model
 
@@ -65,14 +68,36 @@ hf download Lightricks/LTX-2.3 ltx-2.3-spatial-upscaler-x2-1.1.safetensors \
 ### rank 105 bf16
 
 ```bash
-download Kijai/LTX2.3_comfy loras/ltx-2.3-22b-distilled-lora-dynamic_fro09_avg_rank_105_bf16.safetensors \
+hf download Kijai/LTX2.3_comfy loras/ltx-2.3-22b-distilled-lora-dynamic_fro09_avg_rank_105_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 
 ### rank 111 bf16
 
 ```bash
-download Kijai/LTX2.3_comfy loras/ltx-2.3-22b-distilled-1.1_lora-dynamic_fro09_avg_rank_111_bf16.safetensors \
+hf download Kijai/LTX2.3_comfy loras/ltx-2.3-22b-distilled-1.1_lora-dynamic_fro09_avg_rank_111_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 
+## Loras
+
+## Union control
+
+```bash
+hf download Lightricks/LTX-2.3-22b-IC-LoRA-Union-Control ltx-2.3-22b-ic-lora-union-control-ref0.5.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
+
+## Motion track control
+
+```bash
+hf download Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
+
+## Cameraman
+
+```bash
+hf download Cseti/LTX2.3-22B_IC-LoRA-Cameraman_v1 LTX2.3-22B_IC-LoRA-Cameraman_v1_10500.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
