@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 # run-comfyui-ltx
-FROM ls250824/comfyui-runtime:11022026
+FROM ls250824/comfyui-runtime:16042026
 
 # Set Working Directory
 WORKDIR /ComfyUI
@@ -24,7 +24,6 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/rgthree/rgthree-comfy.git && \
     git clone --depth=1 --filter=blob:none https://github.com/liusida/ComfyUI-Login.git && \
     git clone --depth=1 --filter=blob:none https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/1038lab/ComfyUI-JoyCaption.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-KJNodes.git && \
     git clone --depth=1 --filter=blob:none https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/ClownsharkBatwing/RES4LYF.git && \
@@ -44,24 +43,30 @@ RUN --mount=type=cache,target=/root/.cache/git \
 	git clone --depth=1 --filter=blob:none https://github.com/princepainter/Comfyui-PainterVRAM.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/SeanScripts/ComfyUI-Unload-Model.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/Windecay/ComfyUI_Dynamic-RAMCache.git && \
     git clone --depth=1 --filter=blob:none https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/rethink-studios/comfyui-model-linker-desktop.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterLTXV2.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterVideoCombine.git 
+    git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterLTXV2.git 
 
+WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT
 RUN set -eux; \
   for f in \
-    ComfyUI-RMBG/requirements.txt; do \
+    requirements.txt; do \
       [ -f "$f" ] || continue; \
       sed -i -E 's/^( *| *)(onnxruntime)([<>=].*)?(\s*)$/\1onnxruntime-gpu==1.22.*\4/i' "$f"; \
     done
 
+RUN set -eux; \
+  grep -RniE '^[[:space:]]*onnxruntime([[:space:]]*[<>=!~].*)?[[:space:]]*$|^[[:space:]]*onnxruntime-gpu([[:space:]]*[<>=!~].*)?[[:space:]]*$' \
+    /ComfyUI/custom_nodes || true
+
+WORKDIR /ComfyUI/custom_nodes/ComfyUI-SAM3
+# Working version for SAM3 (comfy-env problems)
+RUN git fetch --unshallow && git checkout 5c0474e292e3658645f46e46378d58935a82692f
 # Pixi problem SAM3
-RUN sed -i '/^comfy-env/d' /ComfyUI/custom_nodes/ComfyUI-SAM3/requirements.txt
-RUN sed -i '/^comfy-test/d' /ComfyUI/custom_nodes/ComfyUI-SAM3/requirements.txt
+RUN sed -i '/^comfy-env/d' requirements.txt
+RUN sed -i '/^comfy-test/d' requirements.txt
 
 # Install Dependencies for Cloned Repositories
 WORKDIR /ComfyUI/custom_nodes
@@ -84,11 +89,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 	-r ComfyUI-LTXVideo/requirements.txt \
     -r ComfyUI-Lora-Manager/requirements.txt \
 	-r ComfyUI-SAM3/requirements.txt 
-
-# Activate SAM3
-# WORKDIR /ComfyUI/custom_nodes/ComfyUI-SAM3
-# RUN git fetch --unshallow && git checkout a5e2ceb66d95dc74151669ef83f594265ed62caa
-# RUN python install.py
 
 # Add settings for lora manager 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-Lora-Manager
@@ -126,7 +126,7 @@ WORKDIR /workspace
 EXPOSE 8188 9000
 
 # Labels
-LABEL org.opencontainers.image.title="ComfyUI 0.13.0 for LTX-2 inference" \
+LABEL org.opencontainers.image.title="ComfyUI 0.19.1 for LTX-2 inference" \
       org.opencontainers.image.description="ComfyUI + internal manager + flash-attn + sageattention + onnxruntime-gpu + torch_generic_nms + code-server + civitai downloader + huggingface_hub + custom_nodes" \
       org.opencontainers.image.source="https://hub.docker.com/r/ls250824/run-comfyui-wan2" \
       org.opencontainers.image.licenses="MIT"

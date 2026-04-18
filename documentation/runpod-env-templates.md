@@ -89,3 +89,37 @@ HF_MODEL_VAE_FILENAME3=VAE/taeltx_2.safetensors
 WORKFLOW_HVRAM1=https://provisioning.rozenlaan.site/ltx/LTX-2-i2v-t2v-kijai-pod.json
 WORKFLOW_LVRAM1=https://provisioning.rozenlaan.site/ltx/LTX-2-i2v-t2v-kijai-pod-lvram.json
 ```
+
+## LTX-2.3 dev diffusion model loading
+
+### private
+
+```bash
+CIVITAI_TOKEN={{ RUNPOD_SECRET_CivitAI_API_KEY }}
+HF_TOKEN={{ RUNPOD_SECRET_HF_TOKEN_WRITE }}
+PASSWORD={{ RUNPOD_SECRET_CODE-SERVER-NEW }}
+HF_MODEL_HVRAM_DIFFUSION_MODELS1=Kijai/LTX2.3_comfy
+HF_MODEL_HVRAM_DIFFUSION_MODELS_FILENAME1=diffusion_models/ltx-2.3-22b-dev_transformer_only_bf16.safetensors
+HF_MODEL_LVRAM_DIFFUSION_MODELS1=Kijai/LTX2.3_comfy 
+HF_MODEL_LVRAM_DIFFUSION_MODELS_FILENAME1=diffusion_models/ltx-2.3-22b-dev_transformer_only_fp8_scaled.safetensors
+HF_MODEL_HVRAM_TEXT_ENCODERS1=Comfy-Org/ltx-2 
+HF_MODEL_HVRAM_TEXT_ENCODERS_FILENAME1=split_files/text_encoders/gemma_3_12B_it.safetensors
+HF_MODEL_LVRAM_TEXT_ENCODERS1=Comfy-Org/ltx-2 
+HF_MODEL_LVRAM_TEXT_ENCODERS_FILENAME1=split_files/text_encoders/gemma_3_12B_it_fp8_scaled.safetensors
+HF_MODEL_TEXT_ENCODERS2=Kijai/LTX2.3_comfy 
+HF_MODEL_TEXT_ENCODERS_FILENAME2=text_encoders/ltx-2.3_text_projection_bf16.safetensors
+HF_MODEL_LATENT_UPSCALE1=Lightricks/LTX-2
+HF_MODEL_LATENT_UPSCALE_FILENAME1=ltx-2.3-spatial-upscaler-x2-1.1.safetensors
+HF_MODEL_LORA1=Kijai/LTX2.3_comfy
+HF_MODEL_LORA_FILENAME1=loras/ltx-2.3-22b-distilled-1.1_lora-dynamic_fro09_avg_rank_111_bf16.safetensors
+HF_MODEL_LORA2=Lightricks/LTX-2-19b-IC-LoRA-Detailer
+HF_MODEL_LORA_FILENAME2=ltx-2-19b-ic-lora-detailer.safetensors
+HF_MODEL_VAE1=Kijai/LTX2.3_comfy
+HF_MODEL_VAE_FILENAME1=vae/LTX23_audio_vae_bf16.safetensors
+HF_MODEL_VAE2=Kijai/LTX2.3_comfy
+HF_MODEL_VAE_FILENAME2=vae/LTX23_video_vae_bf16.safetensors
+HF_MODEL_VAE3=Kijai/LTX2.3_comfy
+HF_MODEL_VAE_FILENAME3=vae/taeltx2_3.safetensors
+WORKFLOW_HVRAM1=https://provisioning.rozenlaan.site/ltx/LTX-2-i2v-t2v-kijai-pod.json
+WORKFLOW_LVRAM1=https://provisioning.rozenlaan.site/ltx/LTX-2-i2v-t2v-kijai-pod-lvram.json
+```

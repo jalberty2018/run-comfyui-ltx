@@ -20,20 +20,11 @@ if [[ -n "${RUNPOD_GPU_COUNT:-}" ]]; then
    echo 'source /etc/rp_environment' >> ~/.bashrc
 fi
 
-# Move necessary files to workspace
-echo "ℹ️ [Moving necessary files to workspace] enabling Start/Stop/Restart pod without data loss."
-echo "ℹ️ This takes some time depending on hardware used, even longer if the volume is encrypted, have patience."    
-for script in comfyui-on-workspace.sh files-on-workspace.sh test-on-workspace.sh docs-on-workspace.sh; do
-    if [ -f "/$script" ]; then
-        echo "Executing $script..."
-        "/$script"
-    else
-        echo "⚠️ BUG: Skipping $script (not found)"
-    fi
-done
-
 # Create output directory for cloud transfer
 mkdir -p /workspace/output/
+
+# Set optimizations
+# export PYTORCH_ALLOC_CONF=expandable_segments:True,garbage_collection_threshold:0.8
 
 # GPU detection
 echo "ℹ️ Testing GPU/CUDA provisioning"
@@ -59,6 +50,21 @@ if command -v nvidia-smi >/dev/null 2>&1; then
   fi
 else
   echo "⚠️ [NO GPU] No GPU found via nvidia-smi"
+fi
+
+# Move necessary files to workspace
+if [[ "$HAS_GPU" -eq 1 || "$HAS_GPU_RUNPOD" -eq 1 ]]; then  
+	echo "ℹ️ [Moving necessary files to workspace] enabling Start/Stop/Restart pod without data loss."
+	echo "ℹ️ This takes some time depending on hardware used, even longer if the volume is encrypted."
+	
+	for script in comfyui-on-workspace.sh files-on-workspace.sh test-on-workspace.sh docs-on-workspace.sh; do
+	    if [ -f "/$script" ]; then
+	        echo "Executing $script..."
+	        "/$script"
+	    else
+	        echo "⚠️ BUG: Skipping $script (not found)"
+	    fi
+	done
 fi
 
 # Start code-server (HTTP port 9000) 
@@ -100,9 +106,8 @@ fi
 # Start ComfyUI (HTTP port 8188)
 HAS_COMFYUI=0
 
-if [[ "$HAS_CUDA" -eq 1 ]]; then  	  
+if [[ "$HAS_CUDA" -eq 1 ]]; then
 
-    # Lora manager CIVITAI token
     SETTINGS_DIR="/workspace/ComfyUI/custom_nodes/ComfyUI-Lora-Manager"
 	SETTINGS_FILE="$SETTINGS_DIR/settings.json"
 	TEMPLATE_FILE="$SETTINGS_DIR/settings.json.template"
@@ -116,9 +121,9 @@ if [[ "$HAS_CUDA" -eq 1 ]]; then
 	       '.civitai_api_key = $token' \
 	       "$TEMPLATE_FILE" > "$SETTINGS_FILE"
 	else
-	    echo "⚠️ CIVITAI_TOKEN not set Insert your token manually in ComfyUI-Lora-Manager"
+	    echo "⚠️ CIVITAI_TOKEN not set – Insert your token manually in ComfyUI-Lora-Manager"
 	fi
-
+	
    	echo "▶️ ComfyUI service starting (CUDA available)"
 	    
     python3 /workspace/ComfyUI/main.py ${COMFYUI_EXTRA_ARGUMENTS:---listen --enable-manager --preview-method latent2rgb} &
@@ -168,10 +173,25 @@ download_model_HF() {
 
     echo "ℹ️ [DOWNLOAD] Fetching $model + $file → $target"
 
-    if ! hf download "$model" "$file" --local-dir "$target" >/dev/null 2>&1; then
-        echo "⚠️ HF download failed"
+    hf download "$model" "$file" --local-dir "$target" 
+    local rc=$?
+
+    # ----------- SUCCESS ----------
+    if [[ $rc -eq 0 ]]; then
+        echo "✅ HF download completed"
+        sleep 1
+        return 0
     fi
 
+    # ---- SEGFAULT AFTER SUCCESS ---
+    if [[ $rc -eq 139 && -f "$target/$file" ]]; then
+        echo "⚠️ HF segfault after download (file exists → OK)"
+        sleep 1
+        return 0
+    fi
+
+    # -------- REAL FAILURE --------
+    echo "❌ HF download failed (exit=$rc)"
     sleep 1
     return 0
 }
@@ -196,16 +216,30 @@ download_generic_HF() {
 
     if [[ -n "$file" ]]; then
         echo "ℹ️ [DOWNLOAD] Fetching $model/$file → $target"
-        hf download "$model" "$file" --local-dir "$target" >/dev/null 2>&1 || status="fail"
+        hf download "$model" "$file" --local-dir "$target"
+        local rc=$?
     else
         echo "ℹ️ [DOWNLOAD] Fetching $model → $target"
-        hf download "$model" --local-dir "$target" >/dev/null 2>&1 || status="fail"
+        hf download "$model" --local-dir "$target"
+        local rc=$?
     fi
 
-    if [[ "$status" == "fail" ]]; then
-        echo "⚠️ HF download generic failed: $model/$file/$target "
+    # ----------- SUCCESS ----------
+    if [[ $rc -eq 0 ]]; then
+        echo "✅ HF download completed"
+        sleep 1
+        return 0
     fi
 
+    # ---- SEGFAULT AFTER SUCCESS ---
+    if [[ $rc -eq 139 && -f "$target/$file" ]]; then
+        echo "⚠️ HF segfault after download (file exists → OK)"
+        sleep 1
+        return 0
+    fi
+
+    # -------- REAL FAILURE --------
+    echo "❌ HF download failed (exit=$rc)"
     sleep 1
     return 0
 }
@@ -351,8 +385,7 @@ download_media() {
     return 0
 }
 
- # Provisioning if comfyUI is responding running on GPU with CUDA
- 
+# Provisioning if comfyUI is responding running on GPU with CUDA
 if [[ "$HAS_COMFYUI" -eq 1 ]]; then  
     
     # provisioning Models and loras
@@ -369,13 +402,13 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
       "AUDIO_ENCODERS:AUDIO_ENCODERS_FILENAME:audio_encoders"
       "DIFFUSION_MODELS:DIFFUSION_MODELS_FILENAME:diffusion_models"
       "CHECKPOINTS:CHECKPOINTS_FILENAME:checkpoints"
+      "VL:VL_FILENAME:VLM"
+      "SAMS:SAMS_FILENAME:sams"
       "LATENT_UPSCALE:LATENT_UPSCALE_FILENAME:latent_upscale_models"
       "VAE_APPROX:VAE_APPROX_FILENAME:vae_approx"
+      "CONTROLNET:CONTROLNET_FILENAME:controlnet"
     )
-
-    # Set optimizations
-    export PYTORCH_ALLOC_CONF=expandable_segments:True,garbage_collection_threshold:0.8
-    
+	
     # Huggingface download file depending on VRAM available to specified directory
 
     get_max_vram_gib() {
@@ -401,7 +434,7 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
        HF_PREFIX="HF_MODEL_LVRAM_"
        echo "🟡 Low VRAM detected (${MAX_VRAM_GIB} GB < ${VRAM_THRESHOLD} GB)"
     fi
-    
+
     for cat in "${CATEGORIES_HF[@]}"; do
       IFS=":" read -r NAME SUFFIX DIR <<< "$cat"
 
@@ -559,6 +592,8 @@ except Exception as e2:
     print("Failed:", e2)
 PY
 
+echo "ℹ️ Connections and/or diagnostic information"
+
 if [[ "$HAS_PROVISIONING" -eq 1 ]]; then 
     echo "🎉 Provisioning done, ready to create AI content 🎉"
 		
@@ -576,7 +611,7 @@ if [[ "$HAS_PROVISIONING" -eq 1 ]]; then
 	    # Local health checks (inside the pod)
 	    for service in "${!SERVICES[@]}"; do
 	      port="${SERVICES[$service]}"
-	      url="https://${RUNPOD_POD_ID}-${port}.proxy.runpod.net/"
+	      url="https://${RUNPOD_POD_ID}-${port}.proxy.runpod.net/login"
 	      local_url="http://127.0.0.1:${port}/"
 	
 	      echo "👉 🔗 Service ${service} : ${url}"
@@ -591,6 +626,7 @@ if [[ "$HAS_PROVISIONING" -eq 1 ]]; then
 	        echo "❌ ${service} not responding yet (local ${local_url}, HTTP ${http_code})"
 	      fi
 	    done
+
         echo "👉 🔗 Lora-Manager: https://${RUNPOD_POD_ID}-8188.proxy.runpod.net/loras"
 	  fi
 	fi
@@ -602,8 +638,6 @@ if [[ "$HAS_PROVISIONING" -eq 1 ]]; then
 		cat /root/.config/code-server/config.yaml        
     fi	
 else
-    echo "ℹ️ Running error diagnosis"
-
     if [[ "$HAS_GPU_RUNPOD" -eq 0 ]]; then
         echo "⚠️ Pod started without a runpod GPU"
     fi
@@ -611,13 +645,15 @@ else
     if [[ "$HAS_CUDA" -eq 0 ]]; then
         echo "❌ Pytorch CUDA driver error/mismatch/not available"
         if [[ "$HAS_GPU_RUNPOD" -eq 1 ]]; then
-            echo "⚠️ [SOLUTION] Deploy pod on another region then $RUNPOD_DC_ID ⚠️"
+            echo "⚠️ [SOLUTION 1] Deploy pod on another region then $RUNPOD_DC_ID. ⚠️"
+			echo "⚠️ [SOLUTION 2] Specify CUDA 12.8 using the runpod console filter. ⚠️"
         fi
     fi
 
     if [[ "$HAS_CUDA" -eq 1 && "$HAS_COMFYUI" -eq 0 ]]; then
-        echo "❌ ComfyUI is not online"
-        echo "⚠️ [SOLUTION] restart pod ⚠️"
+        echo "❌ ComfyUI is not online (extreme slow vCPU's)"
+        echo "⚠️ [SOLUTION 1] restart pod ⚠️"
+		echo "⚠️ [SOLUTION 2] Deploy pod on another region then ${RUNPOD_DC_ID:-unknown} ⚠️"
     fi
 fi
 

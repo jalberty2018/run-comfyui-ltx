@@ -3,6 +3,7 @@
 ## LTX
 
 - [2](provisioning/hf_LTX-2.md)
+- [2.3](provisioning/hf_LTX-23.md)
 
 ## Others
 

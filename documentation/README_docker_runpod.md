@@ -1,4 +1,4 @@
-# Run LTX-2 with ComfyUI with provisioning
+# Run LTX-2.3 with ComfyUI with provisioning
 
 ## Features
 
@@ -37,7 +37,7 @@
 
 ### Templates
 
-[**👉 One-click Deploy on RunPod LTX-2 i2v/t2v dev bf16/fp8)**](https://console.runpod.io/deploy?template=p4f6rm9tb4&ref=se4tkc5o)
+[**👉 One-click Deploy on RunPod LTX-2.3 i2v/t2v dev bf16/fp8)**](https://console.runpod.io/deploy?template=p4f6rm9tb4&ref=se4tkc5o)
 
 ## Documentation
 
@@ -46,7 +46,7 @@
 
 ##  Hardware Requirements
 
-### LTX-2 bf16
+### LTX-2.3 bf16
 
 - precision bf16
 - video settings 1920x1088 10sec 24fps
@@ -55,7 +55,7 @@
 |--------------------------|-------|-------------------------|
 | L40S    | 45Gb | 90Gb           |
 
-### LTX-2 fp8
+### LTX-2.3 fp8
 
 - precision fp8 mixed
 - video settings 1024x768 5sec 24fps
