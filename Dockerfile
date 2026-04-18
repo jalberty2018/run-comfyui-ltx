@@ -40,9 +40,7 @@ RUN --mount=type=cache,target=/root/.cache/git \
 	git clone --depth=1 --filter=blob:none https://github.com/x3bits/ComfyUI-Power-Flow.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/9nate-drake/Comfyui-SecNodes.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/PozzettiAndrea/ComfyUI-SAM3.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/princepainter/Comfyui-PainterVRAM.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/SeanScripts/ComfyUI-Unload-Model.git && \
     git clone --depth=1 --filter=blob:none https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/rethink-studios/comfyui-model-linker-desktop.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
@@ -75,19 +73,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
     diffusers psutil \
     -r ComfyUI-Login/requirements.txt \
-    -r ComfyUI-VideoHelperSuite/requirements.txt \
-    -r ComfyUI-KJNodes/requirements.txt \
-    -r comfyui-vrgamedevgirl/requirements.txt \
-    -r RES4LYF/requirements.txt \
-    -r ComfyUI-GGUF/requirements.txt \
-    -r ComfyUI-RMBG/requirements.txt \
-    -r comfyui_controlnet_aux/requirements.txt \
+	-r ComfyUI-VideoHelperSuite/requirements.txt \
+	-r ComfyUI-KJNodes/requirements.txt \
+	-r comfyui-vrgamedevgirl/requirements.txt \
+	-r RES4LYF/requirements.txt \
+	-r ComfyUI-GGUF/requirements.txt \
+	-r ComfyUI-RMBG/requirements.txt \
+	-r comfyui_controlnet_aux/requirements.txt \
 	-r Comfyui-SecNodes/requirements.txt \
-	-r ComfyUI-JoyCaption/requirements.txt \
-	-r ComfyUI-JoyCaption/requirements_gguf.txt \
 	-r ComfyUI-outputlists-combiner/requirements.txt \
 	-r ComfyUI-LTXVideo/requirements.txt \
-    -r ComfyUI-Lora-Manager/requirements.txt \
+	-r ComfyUI-Lora-Manager/requirements.txt \
 	-r ComfyUI-SAM3/requirements.txt 
 
 # Add settings for lora manager 
