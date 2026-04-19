@@ -10,7 +10,7 @@
 
 ![Pod running on RTX A5000 native comfyUI](images/runpod_A5000_LTX.jpeg)
 
-## Workflow i2v/t2v
+## Workflow i2v
 
 ![Workflow i2v](images/ai-generated-LTX.jpg)
 
@@ -31,7 +31,7 @@ A streamlined and automated environment for running **ComfyUI** with **LTX-2.3 v
 
 ### Deployment.
 
-- All available templates on runpod are tested on a L40S.
+- All available templates on runpod are tested on a L40S and RTX A5000.
 
 ### Runpod templates
 
