@@ -40,21 +40,21 @@
 
 ##  Hardware Requirements
 
-### LTX 2.x bf16
+### LTX 2.3 bf16
 
 - precision bf16
 - video settings 1920x1088 20sec 24fps
 
-| GPU          | VRAM  | min RAM |
+| GPU          | VRAM  | RAM |
 |--------------------------|-------|-------------------------|
 | L40S / RTX 6000 Ada | 45Gb | 60Gb           |
 
-### LTX 2.x fp8
+### LTX 2.3 fp8
 
 - precision fp8 mixed
-- video settings 1024x768 20sec 24fps
+- video settings 1280x736 20sec 24fps
 
-| GPU          | VRAM  | min RAM |
+| GPU          | VRAM  | RAM |
 |--------------------------|-------|-------------------------|
 | RTX A5000    | 24Gb | 50Gb           |
 
