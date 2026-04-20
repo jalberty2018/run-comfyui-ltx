@@ -43,6 +43,7 @@ WORKFLOW_HVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfe
 WORKFLOW_LVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod-lvram.json
 WORKFLOW_HVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-hvram.json
 WORKFLOW_LVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-lvram.json
+WORKFLOW_HVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-hvram.json
 ```
 
 ### private
@@ -89,6 +90,7 @@ WORKFLOW_HVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfe
 WORKFLOW_LVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod-lvram.json
 WORKFLOW_HVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-hvram.json
 WORKFLOW_LVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-lvram.json
+WORKFLOW_HVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-hvram.json
 ```
 
 ## LTX-2 dev checkpoint
