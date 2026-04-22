@@ -27,6 +27,10 @@ HF_MODEL_LORA4=Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control
 HF_MODEL_LORA_FILENAME4=ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors
 HF_MODEL_LORA5=Cseti/LTX2.3-22B_IC-LoRA-Cameraman_v1
 HF_MODEL_LORA_FILENAME5=LTX2.3-22B_IC-LoRA-Cameraman_v1_10500.safetensors
+HF_MODEL_LORA6=Comfy-Org/ltx-2.3
+HF_MODEL_LORA_FILENAME6=split_files/loras/ltx-2.3-id-lora-celebvhq-3k.safetensors
+HF_MODEL_LORA7=Comfy-Org/ltx-2.3
+HF_MODEL_LORA_FILENAME7=split_files/loras/ltx-2.3-id-lora-talkvid-3k.safetensors
 HF_MODEL_VAE1=Kijai/LTX2.3_comfy
 HF_MODEL_VAE_FILENAME1=vae/LTX23_audio_vae_bf16.safetensors
 HF_MODEL_VAE2=Kijai/LTX2.3_comfy
@@ -44,6 +48,7 @@ WORKFLOW_LVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfe
 WORKFLOW_HVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-hvram.json
 WORKFLOW_LVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-lvram.json
 WORKFLOW_HVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-hvram.json
+WORKFLOW_HVRAM7=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-hvram.json
 ```
 
 ### Private
@@ -95,6 +100,7 @@ WORKFLOW_LVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfe
 WORKFLOW_HVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-hvram.json
 WORKFLOW_LVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-lvram.json
 WORKFLOW_HVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-hvram.json
+WORKFLOW_HVRAM7=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-hvram.json
 ```
 
 ## LTX-2 dev checkpoint
