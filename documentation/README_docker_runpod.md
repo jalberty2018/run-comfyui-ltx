@@ -3,6 +3,7 @@
 ## Features
 
 - Automatic model and LoRA provisioning via environment variables.
+- [Kijai models no checkpoint](https://huggingface.co/Kijai/LTX2.3_comfy)
 - Included workflows for **video generation** and **enhancement** using pre-installed custom nodes based on [RuneXX](https://huggingface.co/RuneXX/LTX-2.3-Workflows).
 - Compatible with high-performance NVIDIA GPUs (CUDA 12.8).
 - Compiled attentions and GPU accelerations.

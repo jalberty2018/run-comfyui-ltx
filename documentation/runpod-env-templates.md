@@ -2,7 +2,7 @@
 
 ## LTX-2.3 dev diffusion model loading
 
-### public
+### Public
 
 ```bash
 HF_MODEL_HVRAM_DIFFUSION_MODELS1=Kijai/LTX2.3_comfy
@@ -46,7 +46,7 @@ WORKFLOW_LVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfe
 WORKFLOW_HVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-hvram.json
 ```
 
-### private
+### Private
 
 ```bash
 CIVITAI_TOKEN={{ RUNPOD_SECRET_CivitAI_API_KEY }}
@@ -56,10 +56,10 @@ HF_MODEL_HVRAM_DIFFUSION_MODELS1=Kijai/LTX2.3_comfy
 HF_MODEL_HVRAM_DIFFUSION_MODELS_FILENAME1=diffusion_models/ltx-2.3-22b-dev_transformer_only_bf16.safetensors
 HF_MODEL_LVRAM_DIFFUSION_MODELS1=Kijai/LTX2.3_comfy 
 HF_MODEL_LVRAM_DIFFUSION_MODELS_FILENAME1=diffusion_models/ltx-2.3-22b-dev_transformer_only_fp8_scaled.safetensors
-HF_MODEL_HVRAM_TEXT_ENCODERS1=Comfy-Org/ltx-2 
-HF_MODEL_HVRAM_TEXT_ENCODERS_FILENAME1=split_files/text_encoders/gemma_3_12B_it.safetensors
-HF_MODEL_LVRAM_TEXT_ENCODERS1=Comfy-Org/ltx-2 
-HF_MODEL_LVRAM_TEXT_ENCODERS_FILENAME1=split_files/text_encoders/gemma_3_12B_it_fp8_scaled.safetensors
+HF_MODEL_HVRAM_TEXT_ENCODERS1=DreamFast/gemma-3-12b-it-heretic-v2 
+HF_MODEL_HVRAM_TEXT_ENCODERS_FILENAME1=comfyui/gemma-3-12b-it-heretic-v2.safetensors
+HF_MODEL_LVRAM_TEXT_ENCODERS1=DreamFast/gemma-3-12b-it-heretic-v2 
+HF_MODEL_LVRAM_TEXT_ENCODERS_FILENAME1=comfyui/gemma-3-12b-it-heretic-v2_fp8_e4m3fn.safetensors
 HF_MODEL_TEXT_ENCODERS2=Kijai/LTX2.3_comfy 
 HF_MODEL_TEXT_ENCODERS_FILENAME2=text_encoders/ltx-2.3_text_projection_bf16.safetensors
 HF_MODEL_LATENT_UPSCALE1=Lightricks/LTX-2.3
@@ -74,6 +74,10 @@ HF_MODEL_LORA4=Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control
 HF_MODEL_LORA_FILENAME4=ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors
 HF_MODEL_LORA5=Cseti/LTX2.3-22B_IC-LoRA-Cameraman_v1
 HF_MODEL_LORA_FILENAME5=LTX2.3-22B_IC-LoRA-Cameraman_v1_10500.safetensors
+HF_MODEL_LORA6=Comfy-Org/ltx-2.3
+HF_MODEL_LORA_FILENAME6=split_files/loras/ltx-2.3-id-lora-celebvhq-3k.safetensors
+HF_MODEL_LORA7=Comfy-Org/ltx-2.3
+HF_MODEL_LORA_FILENAME7=split_files/loras/ltx-2.3-id-lora-talkvid-3k.safetensors
 HF_MODEL_VAE1=Kijai/LTX2.3_comfy
 HF_MODEL_VAE_FILENAME1=vae/LTX23_audio_vae_bf16.safetensors
 HF_MODEL_VAE2=Kijai/LTX2.3_comfy
@@ -118,7 +122,7 @@ WORKFLOW1=https://provisioning.rozenlaan.site/ltx/LTX-2-t2v-euler-res-2s.json
 
 ## LTX-2 dev diffusion model loading
 
-### private
+### Private
 
 ```bash
 CIVITAI_TOKEN={{ RUNPOD_SECRET_CivitAI_API_KEY }}

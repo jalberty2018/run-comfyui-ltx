@@ -45,7 +45,9 @@ RUN --mount=type=cache,target=/root/.cache/git \
 	git clone --depth=1 --filter=blob:none https://github.com/rethink-studios/comfyui-model-linker-desktop.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
     git clone --depth=1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterLTXV2.git 
+    git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterLTXV2.git && \
+	git clone --depth=1 --filter=blob:none https://github.com/IAMCCS/IAMCCS-nodes.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/WASasquatch/was_affine
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT

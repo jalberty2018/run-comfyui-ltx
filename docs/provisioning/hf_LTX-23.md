@@ -5,8 +5,11 @@
 - [Union-Control](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Union-Control)
 - [Motion-Track-Control](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control)
 - [Cameraman](https://huggingface.co/Cseti/LTX2.3-22B_IC-LoRA-Cameraman_v1)
+- [Gemma-3-12b-Abliterated-LTX2](https://huggingface.co/FusionCow/Gemma-3-12b-Abliterated-LTX2/)
+- [Gemma-3-12b-it-heretic-v2](https://huggingface.co/DreamFast/gemma-3-12b-it-heretic-v2)
+- [Id Lora](https://huggingface.co/Comfy-Org/ltx-2.3/tree/main/split_files/loras)
 
-## Diffusion model
+## Diffusion Models (Transformer Only)
 
 ### bf16
 
@@ -24,14 +27,14 @@ hf download  Kijai/LTX2.3_comfy diffusion_models/ltx-2.3-22b-dev_transformer_onl
 
 ## VAE
 
-### Audio fp16
+### Audio bp16
 
 ```bash
 hf download Kijai/LTX2.3_comfy vae/LTX23_audio_vae_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/vae/
 ```
 
-### Video fp16
+### Video bp16
 
 ```bash
 hf download Kijai/LTX2.3_comfy vae/LTX23_video_vae_bf16.safetensors \
@@ -45,12 +48,56 @@ hf download Kijai/LTX2.3_comfy vae/taeltx2_3.safetensors \
 --local-dir /workspace/ComfyUI/models/vae/
 ```
 
-## CLIP Text encoder
+## CLIP encoder standard
 
-### embeddings_connector fp16
+### embeddings_connector bf16
 
 ```bash
 hf download Kijai/LTX2.3_comfy text_encoders/ltx-2.3_text_projection_bf16.safetensors \
+--local-dir /workspace/ComfyUI/models/text_encoders/
+```
+
+### textencoder bf16
+
+```bash
+hf download Org/ltx-2 split_files/text_encoders/gemma_3_12B_it.safetensors  \
+--local-dir /workspace/ComfyUI/models/text_encoders/
+```
+
+### textencoder fp8
+
+```bash
+hf download Org/ltx-2 split_files/text_encoders/gemma_3_12B_it_fp8_scaled.safetensors  \
+--local-dir /workspace/ComfyUI/models/text_encoders/
+```
+
+## CLIP text encoders abliturated
+
+### FusionCow/Gemma-3-12b-Abliterated-LTX2 bf16 
+
+```bash
+hf download FusionCow/Gemma-3-12b-Abliterated-LTX2 gemma_ablit_fixed_bf16.safetensors  \
+--local-dir /workspace/ComfyUI/models/text_encoders/
+```
+
+### FusionCow/Gemma-3-12b-Abliterated-LTX2 fp8
+
+```bash
+hf download FusionCow/Gemma-3-12b-Abliterated-LTX2 gemma_ablit_fixed_fp8.safetensors  \
+--local-dir /workspace/ComfyUI/models/text_encoders/
+```
+
+### DreamFast/gemma-3-12b-it-heretic-v2 bf16
+
+```bash
+hf download DreamFast/gemma-3-12b-it-heretic-v2 comfyui/gemma-3-12b-it-heretic-v2.safetensors  \
+--local-dir /workspace/ComfyUI/models/text_encoders/
+```
+
+### DreamFast/gemma-3-12b-it-heretic-v2 fp8
+
+```bash
+hf download DreamFast/gemma-3-12b-it-heretic-v2 comfyui/gemma-3-12b-it-heretic-v2_fp8_e4m3fn.safetensors  \
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
@@ -63,7 +110,7 @@ hf download Lightricks/LTX-2.3 ltx-2.3-spatial-upscaler-x2-1.1.safetensors \
 
 ## Distill loras
 
-- Used with full model
+- Used with dev model
 
 ### rank 105 bf16
 
@@ -99,5 +146,17 @@ hf download Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control ltx-2.3-22b-ic-l
 
 ```bash
 hf download Cseti/LTX2.3-22B_IC-LoRA-Cameraman_v1 LTX2.3-22B_IC-LoRA-Cameraman_v1_10500.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
+
+## Id-lora
+
+```bash
+hf download Comfy-Org/ltx-2.3 split_files/loras/ltx-2.3-id-lora-celebvhq-3k.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
+
+```bash
+hf download Comfy-Org/ltx-2.3 split_files/loras/ltx-2.3-id-lora-talkvid-3k.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
