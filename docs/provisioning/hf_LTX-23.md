@@ -8,6 +8,7 @@
 - [Gemma-3-12b-Abliterated-LTX2](https://huggingface.co/FusionCow/Gemma-3-12b-Abliterated-LTX2/)
 - [Gemma-3-12b-it-heretic-v2](https://huggingface.co/DreamFast/gemma-3-12b-it-heretic-v2)
 - [Id Lora](https://huggingface.co/Comfy-Org/ltx-2.3/tree/main/split_files/loras)
+- [Transition Lora](https://huggingface.co/joyfox/LTX-2.3-Transition-LORA)
 
 ## Diffusion Models (Transformer Only)
 
@@ -159,4 +160,11 @@ hf download Comfy-Org/ltx-2.3 split_files/loras/ltx-2.3-id-lora-celebvhq-3k.safe
 ```bash
 hf download Comfy-Org/ltx-2.3 split_files/loras/ltx-2.3-id-lora-talkvid-3k.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
+```
+
+## Transition lora
+
+```bash
+hf download joyfox/LTX-2.3-Transition-LORA ltx2.3-transition.safetensors  \ 
+--local-dir /workspace/ComfyUI/models/loras 
 ```

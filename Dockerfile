@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 # run-comfyui-ltx
-FROM ls250824/comfyui-runtime:16042026
+FROM ls250824/comfyui-runtime:25042026
 
 # Set Working Directory
 WORKDIR /ComfyUI
