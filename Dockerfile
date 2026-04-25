@@ -49,8 +49,7 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/IAMCCS/IAMCCS-nodes.git && \
     git clone --depth=1 --filter=blob:none https://github.com/WASasquatch/was_affine.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-MelBandRoFormer.git && \
-  	git clone --depth=1 --filter=blob:none https://github.com/alexopus/ComfyUI-Image-Saver.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-PromptRelay.git    
+    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-PromptRelay.git
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT
@@ -94,7 +93,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 	-r ComfyUI-outputlists-combiner/requirements.txt \
 	-r ComfyUI-LTXVideo/requirements.txt \
 	-r ComfyUI-Lora-Manager/requirements.txt \
-	-r ComfyUI-SAM3/requirements.txt 
+	-r ComfyUI-SAM3/requirements.txt \
+	-r ComfyUI-MelBandRoFormer/requirements.txt
 
 # Add settings for lora manager 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-Lora-Manager
