@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
     matrix-nio \
     -r manager_requirements.txt
-
+	
 # Clone
 WORKDIR /ComfyUI/custom_nodes
 
@@ -26,29 +26,30 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-KJNodes.git && \
     git clone --depth=1 --filter=blob:none https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/ClownsharkBatwing/RES4LYF.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/evanspearman/ComfyMath.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/city96/ComfyUI-GGUF.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/ClownsharkBatwing/RES4LYF.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/evanspearman/ComfyMath.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/city96/ComfyUI-GGUF.git && \
     git clone --depth=1 --filter=blob:none https://github.com/Azornes/Comfyui-Resolution-Master.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-segment-anything-2.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-segment-anything-2.git && \
     git clone --depth=1 --filter=blob:none https://github.com/1038lab/ComfyUI-RMBG.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/Fannovel16/comfyui_controlnet_aux.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/liusida/ComfyUI-AutoCropFaces.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/GizmoR13/PG-Nodes.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/vrgamegirl19/comfyui-vrgamedevgirl.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/BigStationW/ComfyUi-Scale-Image-to-Total-Pixels-Advanced && \
-	git clone --depth=1 --filter=blob:none https://github.com/x3bits/ComfyUI-Power-Flow.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/9nate-drake/Comfyui-SecNodes.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/PozzettiAndrea/ComfyUI-SAM3.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/Fannovel16/comfyui_controlnet_aux.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/liusida/ComfyUI-AutoCropFaces.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/GizmoR13/PG-Nodes.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/vrgamegirl19/comfyui-vrgamedevgirl.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/BigStationW/ComfyUi-Scale-Image-to-Total-Pixels-Advanced.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/x3bits/ComfyUI-Power-Flow.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/9nate-drake/Comfyui-SecNodes.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/PozzettiAndrea/ComfyUI-SAM3.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner.git && \
     git clone --depth=1 --filter=blob:none https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/rethink-studios/comfyui-model-linker-desktop.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/rethink-studios/comfyui-model-linker-desktop.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
     git clone --depth=1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials.git && \
     git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterLTXV2.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/IAMCCS/IAMCCS-nodes.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/WASasquatch/was_affine && \
-    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-MelBandRoFormer.git
+    git clone --depth=1 --filter=blob:none https://github.com/IAMCCS/IAMCCS-nodes.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/WASasquatch/was_affine.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-MelBandRoFormer.git && \
+	git clone --depth=1 --filter=blob:none https://github.com/alexopus/ComfyUI-Image-Saver.git && \
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT
@@ -70,12 +71,16 @@ RUN git fetch --unshallow && git checkout 5c0474e292e3658645f46e46378d58935a8269
 RUN sed -i '/^comfy-env/d' requirements.txt
 RUN sed -i '/^comfy-test/d' requirements.txt
 
+# Install Dependencies global
+RUN --mount=type=cache,target=/root/.cache/pip \
+  python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
+  diffusers psutil pydantic pydantic-settings
+
 # Install Dependencies for Cloned Repositories
 WORKDIR /ComfyUI/custom_nodes
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
-    diffusers psutil \
     -r ComfyUI-Login/requirements.txt \
 	-r ComfyUI-VideoHelperSuite/requirements.txt \
 	-r ComfyUI-KJNodes/requirements.txt \
@@ -126,7 +131,7 @@ WORKDIR /workspace
 EXPOSE 8188 9000
 
 # Labels
-LABEL org.opencontainers.image.title="ComfyUI 0.19.1 for LTX-2.x inference" \
+LABEL org.opencontainers.image.title="ComfyUI 0.19.3 for LTX-2.x inference" \
       org.opencontainers.image.description="ComfyUI + internal manager + flash-attn + sageattention + onnxruntime-gpu + torch_generic_nms + code-server + civitai downloader + huggingface_hub + custom_nodes" \
       org.opencontainers.image.source="https://hub.docker.com/r/ls250824/run-comfyui-wan2" \
       org.opencontainers.image.licenses="MIT"
