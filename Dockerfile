@@ -49,7 +49,8 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/IAMCCS/IAMCCS-nodes.git && \
     git clone --depth=1 --filter=blob:none https://github.com/WASasquatch/was_affine.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-MelBandRoFormer.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/alexopus/ComfyUI-Image-Saver.git && \
+  	git clone --depth=1 --filter=blob:none https://github.com/alexopus/ComfyUI-Image-Saver.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-PromptRelay.git    
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT
