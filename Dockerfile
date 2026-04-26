@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
     matrix-nio \
     -r manager_requirements.txt
-	
+
 # Clone
 WORKDIR /ComfyUI/custom_nodes
 
@@ -72,6 +72,11 @@ RUN git fetch --unshallow && git checkout 5c0474e292e3658645f46e46378d58935a8269
 RUN sed -i '/^comfy-env/d' requirements.txt
 RUN sed -i '/^comfy-test/d' requirements.txt
 
+WORKDIR /ComfyUI/custom_nodes/ComfyUI-Easy-Use
+# remove onnxruntime
+RUN sed -i '/^onnxruntime/d' requirements.txt
+
+WORKDIR /
 # Install Dependencies global
 RUN --mount=type=cache,target=/root/.cache/pip \
   python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
@@ -96,7 +101,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 	-r ComfyUI-Lora-Manager/requirements.txt \
 	-r ComfyUI-SAM3/requirements.txt \
 	-r ComfyUI-MelBandRoFormer/requirements.txt \
-  -r ComfyUI-Easy-Use/requirements.txt
+    -r ComfyUI-Easy-Use/requirements.txt
 
 # Add settings for lora manager 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-Lora-Manager
