@@ -1,6 +1,6 @@
 # Environment variables for templates
 
-## LTX-2.3 dev diffusion model loading
+## LTX-2.3 dev
 
 ### Public
 
@@ -37,6 +37,8 @@ HF_MODEL_LORA7=Comfy-Org/ltx-2.3
 HF_MODEL_LORA_FILENAME7=split_files/loras/ltx-2.3-id-lora-talkvid-3k.safetensors
 HF_MODEL_LORA8=joyfox/LTX-2.3-Transition-LORA
 HF_MODEL_LORA_FILENAME8=ltx2.3-transition.safetensors
+HF_MODEL_LORA9=LiconStudio/Ltx2.3-VBVR-lora-I2V
+HF_MODEL_LORA_FILENAME9=Ltx2.3-Licon-VBVR-I2V-240K-R32.safetensors
 HF_MODEL_VAE1=Kijai/LTX2.3_comfy
 HF_MODEL_VAE_FILENAME1=vae/LTX23_audio_vae_bf16.safetensors
 HF_MODEL_VAE2=Kijai/LTX2.3_comfy
@@ -140,7 +142,7 @@ HF_MODEL_VAE_FILENAME2=VAE/taeltx_2.safetensors
 WORKFLOW1=https://provisioning.rozenlaan.site/ltx/LTX-2-t2v-euler-res-2s.json
 ```
 
-## LTX-2 dev diffusion model loading
+## LTX-2 dev
 
 ### Private
 

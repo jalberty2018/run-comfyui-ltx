@@ -26,7 +26,7 @@
 
 ### Deployment/Usage information
 
-- All available templates on runpod are tested on a L40S and RTX A5000.
+- All available templates on runpod are tested on compatible GPU´s see below.
 - Specific models/loras/workflows for the templates are downloaded when the pod starts.
 - Avoid pods without region they are unstable.
 
@@ -39,7 +39,7 @@
 - [Start](https://comfyui.rozenlaan.site/ComfyUI_LTX/)
 - [Tutorial](https://comfyui.rozenlaan.site/ComfyUI_LTX_tutorial/)
 
-##  Hardware Requirements
+## Hardware tested
 
 ### LTX 2.3 bf16
 
@@ -57,7 +57,7 @@
 
 | GPU          | VRAM  | RAM |
 |--------------------------|-------|-------------------------|
-| RTX A5000    | 24Gb | 50Gb           |
+| RTX A5000 / RTX 4090 | 24Gb | 50Gb           |
 
 ## Other pods
 
