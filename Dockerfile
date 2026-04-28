@@ -76,6 +76,10 @@ WORKDIR /ComfyUI/custom_nodes/ComfyUI-Easy-Use
 # remove onnxruntime
 RUN sed -i '/^onnxruntime/d' requirements.txt
 
+WORKDIR /ComfyUI/custom_nodes/IAMCCS-nodes
+# Use version without errors
+RUN git fetch --unshallow && git checkout d11592ca6b7550877ca048e8a7d6eb37e331ade2
+
 WORKDIR /
 # Install Dependencies global
 RUN --mount=type=cache,target=/root/.cache/pip \
