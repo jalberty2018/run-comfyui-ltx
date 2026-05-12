@@ -50,7 +50,7 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/WASasquatch/was_affine.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-MelBandRoFormer.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-PromptRelay.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection  && \
+    git clone --depth=1 --filter=blob:none https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git  && \
     git clone --depth=1 --filter=blob:none https://github.com/wuwukaka/ComfyUI-BodyRatioMapper.git && \
     git clone --depth=1 --filter=blob:none https://github.com/yolain/ComfyUI-Easy-Use.git
 
@@ -108,7 +108,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 	-r ComfyUI-SAM3/requirements.txt \
 	-r ComfyUI-MelBandRoFormer/requirements.txt \
   -r ComfyUI-Easy-Use/requirements.txt \
-  -r ComfyUI_YOLO_For_Multi_SDPose_Detection
+  -r ComfyUI_YOLO_For_Multi_SDPose_Detection/requirements.txt
 
 # Add settings for lora manager 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-Lora-Manager
