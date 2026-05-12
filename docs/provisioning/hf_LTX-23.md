@@ -10,6 +10,7 @@
 - [Id Lora](https://huggingface.co/Comfy-Org/ltx-2.3/tree/main/split_files/loras)
 - [Transition Lora](https://huggingface.co/joyfox/LTX-2.3-Transition-LORA)
 - [VBVR Lora](https://huggingface.co/LiconStudio/Ltx2.3-VBVR-lora-I2V)
+- [LipDub Lora](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-LipDub)
 
 ## Diffusion Models (Transformer Only)
 
@@ -176,3 +177,11 @@ hf download joyfox/LTX-2.3-Transition-LORA ltx2.3-transition.safetensors  \
 hf download LiconStudio/Ltx2.3-VBVR-lora-I2V Ltx2.3-Licon-VBVR-I2V-240K-R32.safetensors \ 
   --local-dir /workspace/ComfyUI/models/loras
 ```
+
+## LipDub (Gated)
+
+```bash
+hf download Lightricks/LTX-2.3-22b-IC-LoRA-LipDub ltx-2.3-22b-ic-lora-lipdub-0.9.safetensors \ 
+  —local-dir /workspace/ComfyUI/models/loras
+```
+
