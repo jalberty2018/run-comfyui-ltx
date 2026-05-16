@@ -11,6 +11,7 @@
 - [Transition Lora](https://huggingface.co/joyfox/LTX-2.3-Transition-LORA)
 - [VBVR Lora](https://huggingface.co/LiconStudio/Ltx2.3-VBVR-lora-I2V)
 - [LipDub Lora](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-LipDub)
+- [Kajai IC loras](https://huggingface.co/Kijai/LTX2-IC-LoRAs)
 
 ## Diffusion Models (Transformer Only)
 
@@ -185,3 +186,9 @@ hf download Lightricks/LTX-2.3-22b-IC-LoRA-LipDub ltx-2.3-22b-ic-lora-lipdub-0.9
   —local-dir /workspace/ComfyUI/models/loras
 ```
 
+## realisdance 
+
+```bash
+hf download Kijai/LTX2-IC-LoRAs realisdance_ltx2.3_ic-lora_step_02000.safetensors \ 
+  —local-dir /workspace/ComfyUI/models/loras
+```
