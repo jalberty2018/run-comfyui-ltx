@@ -88,7 +88,7 @@ WORKDIR /
 # Install Dependencies global
 RUN --mount=type=cache,target=/root/.cache/pip \
   python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
-  diffusers psutil pydantic pydantic-settings
+  diffusers psutil pydantic pydantic-settings "descript-audiotools>=0.7.2" "descript-audio-codec"
 
 # Install Dependencies for Cloned Repositories
 WORKDIR /ComfyUI/custom_nodes
@@ -109,8 +109,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 	-r ComfyUI-Lora-Manager/requirements.txt \
 	-r ComfyUI-SAM3/requirements.txt \
 	-r ComfyUI-MelBandRoFormer/requirements.txt \
-    -r ComfyUI-Easy-Use/requirements.txt \
-    -r ComfyUI_YOLO_For_Multi_SDPose_Detection/requirements.txt \
+  -r ComfyUI-Easy-Use/requirements.txt \
+  -r ComfyUI_YOLO_For_Multi_SDPose_Detection/requirements.txt \
 	-r ComfyUI-FishAudioS2/requirements.txt
 
 # Add settings for lora manager 
