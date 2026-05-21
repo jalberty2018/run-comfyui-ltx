@@ -53,8 +53,8 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git  && \
     git clone --depth=1 --filter=blob:none https://github.com/wuwukaka/ComfyUI-BodyRatioMapper.git && \
     git clone --depth=1 --filter=blob:none https://github.com/yolain/ComfyUI-Easy-Use.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/afloy011-spec/afloy_audio_tools.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/Saganaki22/ComfyUI-FishAudioS2.git
+	  git clone --depth=1 --filter=blob:none https://github.com/afloy011-spec/afloy_audio_tools.git && \
+	  git clone --depth=1 --filter=blob:none https://github.com/Saganaki22/ComfyUI-FishAudioS2.git
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT
@@ -120,6 +120,46 @@ COPY --chmod=644 /configuration/lora-manager-settings.json settings.json.templat
 
 # Set Working Directory
 WORKDIR /
+
+# Patch for Kornea error in LTX-VIDEO
+RUN python3 - <<'PY'
+from pathlib import Path
+
+p = Path("/ComfyUI/custom_nodes/ComfyUI-LTXVideo/pyramid_blending.py")
+
+if not p.exists():
+    raise SystemExit(f"❌ File not found: {p}")
+
+s = p.read_text()
+
+old = """from kornia.geometry.transform.pyramid import (
+    PyrUp,
+    build_laplacian_pyramid,
+    build_pyramid,
+    find_next_powerof_two,
+    is_powerof_two,
+    pad,
+)"""
+
+new = """from kornia.geometry.transform.pyramid import (
+    PyrUp,
+    build_laplacian_pyramid,
+    build_pyramid,
+    find_next_powerof_two,
+    is_powerof_two,
+)
+from torch.nn.functional import pad"""
+
+if old in s:
+    s = s.replace(old, new)
+    p.write_text(s)
+    print("✅ Patched ComfyUI-LTXVideo pyramid_blending.py")
+elif "from torch.nn.functional import pad" in s:
+    print("ℹ️ Patch already applied")
+else:
+    raise SystemExit("❌ Expected import block not found; upstream file changed")
+
+PY
 
 # Clone documentation repo into /comfyui-docs
 RUN --mount=type=cache,target=/root/.cache/git \
