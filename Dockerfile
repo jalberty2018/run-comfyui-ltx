@@ -53,8 +53,10 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git  && \
     git clone --depth=1 --filter=blob:none https://github.com/wuwukaka/ComfyUI-BodyRatioMapper.git && \
     git clone --depth=1 --filter=blob:none https://github.com/yolain/ComfyUI-Easy-Use.git && \
-	  git clone --depth=1 --filter=blob:none https://github.com/afloy011-spec/afloy_audio_tools.git && \
-	  git clone --depth=1 --filter=blob:none https://github.com/Saganaki22/ComfyUI-FishAudioS2.git
+	git clone --depth=1 --filter=blob:none https://github.com/afloy011-spec/afloy_audio_tools.git && \
+	git clone --depth=1 --filter=blob:none https://github.com/Saganaki22/ComfyUI-FishAudioS2.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/TenStrip/10S-Comfy-nodes.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT
@@ -112,7 +114,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     -r ComfyUI-Easy-Use/requirements.txt \
     -r ComfyUI_YOLO_For_Multi_SDPose_Detection/requirements.txt \
 	-r ComfyUI-FishAudioS2/requirements.txt \
-	-r ComfyUI-PromptRelay/requirements.txt
+	-r ComfyUI-PromptRelay/requirements.txt \
+    -r 10S-Comfy-nodes/requirements.txt
 
 # Add settings for lora manager 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-Lora-Manager

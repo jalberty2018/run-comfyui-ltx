@@ -12,6 +12,9 @@
 - [VBVR Lora](https://huggingface.co/LiconStudio/Ltx2.3-VBVR-lora-I2V)
 - [LipDub Lora](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-LipDub)
 - [Kajai IC loras](https://huggingface.co/Kijai/LTX2-IC-LoRAs)
+- [Sulphur](https://huggingface.co/SulphurAI/Sulphur-2-base)
+- [Tenstrip uncensored](https://huggingface.co/TenStrip/LTX2.3-10Eros)
+- [Tenstrip distilled lora](https://huggingface.co/TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments)
 
 ## Diffusion Models (Transformer Only)
 
@@ -26,6 +29,13 @@ hf download  Kijai/LTX2.3_comfy diffusion_models/ltx-2.3-22b-dev_transformer_onl
 
 ```bash
 hf download  Kijai/LTX2.3_comfy diffusion_models/ltx-2.3-22b-dev_transformer_only_fp8_scaled.safetensors \
+--local-dir /workspace/ComfyUI/models/diffusion_models/
+```
+
+### fp8 Uncensored 
+
+```bash
+hf download TenStrip/LTX2.3-10Eros 10Eros_v1_fp8_transformer.safetensors \
 --local-dir /workspace/ComfyUI/models/diffusion_models/
 ```
 
@@ -130,6 +140,20 @@ hf download Kijai/LTX2.3_comfy loras/ltx-2.3-22b-distilled-1.1_lora-dynamic_fro0
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 
+### Ceil 72 condsafe (i2V)
+
+```bash
+hf download TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
+
+### Ceil 72 Standard
+
+```bash
+hf download TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments ltx-2.3-22b-distilled-lora-fro90_ceil72.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
+
 ## Loras
 
 ## Union control
@@ -191,4 +215,11 @@ hf download Lightricks/LTX-2.3-22b-IC-LoRA-LipDub ltx-2.3-22b-ic-lora-lipdub-0.9
 ```bash
 hf download Kijai/LTX2-IC-LoRAs realisdance_ltx2.3_ic-lora_step_02000.safetensors \ 
   —local-dir /workspace/ComfyUI/models/loras
+```
+
+## SulphurAI (uncensor lora)
+
+```bash
+hf download SulphurAI/Sulphur-2-base sulphur_lora_rank_768.safetensors \ 
+--local-dir=/workspace/ComfyUI/models/loras
 ```
