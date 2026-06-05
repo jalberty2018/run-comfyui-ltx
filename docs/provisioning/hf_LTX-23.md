@@ -71,14 +71,14 @@ hf download Kijai/LTX2.3_comfy text_encoders/ltx-2.3_text_projection_bf16.safete
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
-### textencoder bf16
+### Textencoder bf16
 
 ```bash
 hf download Org/ltx-2 split_files/text_encoders/gemma_3_12B_it.safetensors  \
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
-### textencoder fp8
+### Textencoder fp8
 
 ```bash
 hf download Org/ltx-2 split_files/text_encoders/gemma_3_12B_it_fp8_scaled.safetensors  \
@@ -126,14 +126,14 @@ hf download Lightricks/LTX-2.3 ltx-2.3-spatial-upscaler-x2-1.1.safetensors \
 
 - Used with dev model
 
-### rank 105 bf16
+### Rank 105 bf16
 
 ```bash
 hf download Kijai/LTX2.3_comfy loras/ltx-2.3-22b-distilled-lora-dynamic_fro09_avg_rank_105_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 
-### rank 111 bf16
+### Rank 111 bf16
 
 ```bash
 hf download Kijai/LTX2.3_comfy loras/ltx-2.3-22b-distilled-1.1_lora-dynamic_fro09_avg_rank_111_bf16.safetensors \
@@ -151,6 +151,13 @@ hf download TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments ltx-2.3-22b-distilled
 
 ```bash
 hf download TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments ltx-2.3-22b-distilled-lora-fro90_ceil72.safetensors \
+--local-dir /workspace/ComfyUI/models/loras/
+```
+
+### Sulphur
+
+```bash
+hf download SulphurAI/Sulphur-2-base ltx-distill_loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 
@@ -210,14 +217,14 @@ hf download Lightricks/LTX-2.3-22b-IC-LoRA-LipDub ltx-2.3-22b-ic-lora-lipdub-0.9
   —local-dir /workspace/ComfyUI/models/loras
 ```
 
-## realisdance 
+## Realisdance 
 
 ```bash
 hf download Kijai/LTX2-IC-LoRAs realisdance_ltx2.3_ic-lora_step_02000.safetensors \ 
   —local-dir /workspace/ComfyUI/models/loras
 ```
 
-## SulphurAI (uncensor lora)
+## SulphurAI (Uncensor)
 
 ```bash
 hf download SulphurAI/Sulphur-2-base sulphur_lora_rank_768.safetensors \ 
