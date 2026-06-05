@@ -15,6 +15,7 @@
 - [Sulphur](https://huggingface.co/SulphurAI/Sulphur-2-base)
 - [Tenstrip uncensored](https://huggingface.co/TenStrip/LTX2.3-10Eros)
 - [Tenstrip distilled lora](https://huggingface.co/TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments)
+- [Sulphur experimental](https://huggingface.co/maximsobolev275/LTX-SulphurExperimental-LoRA-Optimized)
 
 ## Diffusion Models (Transformer Only)
 
@@ -217,7 +218,7 @@ hf download Kijai/LTX2-IC-LoRAs realisdance_ltx2.3_ic-lora_step_02000.safetensor
   —local-dir /workspace/ComfyUI/models/loras
 ```
 
-## SulphurAI (uncensor lora)
+## SulphurAI (nsfw)
 
 ```bash
 hf download SulphurAI/Sulphur-2-base sulphur_lora_rank_768.safetensors \ 
@@ -226,5 +227,10 @@ hf download SulphurAI/Sulphur-2-base sulphur_lora_rank_768.safetensors \
 
 ```bash
 hf download SulphurAI/Sulphur-2-base experimental/sulphur_experimental_lora_v1.safetensors \ 
+--local-dir=/workspace/ComfyUI/models/loras
+```
+
+```bash
+hf download maximsobolev275/LTX-SulphurExperimental-LoRA-Optimized LTX_SulphurEXP_LoRA_fro99-avgrank105.safetensors \ 
 --local-dir=/workspace/ComfyUI/models/loras
 ```

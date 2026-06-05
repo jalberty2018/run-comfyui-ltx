@@ -89,12 +89,12 @@ HF_MODEL_LORA2=TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments
 HF_MODEL_LORA_FILENAME2=ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors
 HF_MODEL_LORA3=Lightricks/LTX-2.3-22b-IC-LoRA-Union-Control
 HF_MODEL_LORA_FILENAME3=ltx-2.3-22b-ic-lora-union-control-ref0.5.safetensors
-HF_MODEL_LORA4=Cseti/LTX2.3-22B_IC-LoRA-Cameraman_v1
-HF_MODEL_LORA_FILENAME4=LTX2.3-22B_IC-LoRA-Cameraman_v1_10500.safetensors
+HF_MODEL_LORA4=Comfy-Org/ltx-2.3
+HF_MODEL_LORA_FILENAME4=split_files/loras/ltx-2.3-id-lora-celebvhq-3k.safetensors
 HF_MODEL_LORA5=Comfy-Org/ltx-2.3
-HF_MODEL_LORA_FILENAME5=split_files/loras/ltx-2.3-id-lora-celebvhq-3k.safetensors
-HF_MODEL_LORA6=Comfy-Org/ltx-2.3
-HF_MODEL_LORA_FILENAME6=split_files/loras/ltx-2.3-id-lora-talkvid-3k.safetensors
+HF_MODEL_LORA_FILENAME5=split_files/loras/ltx-2.3-id-lora-talkvid-3k.safetensors
+HF_MODEL_LORA6=maximsobolev275/LTX-SulphurExperimental-LoRA-Optimized
+HF_MODEL_LORA_FILENAME6=LTX_SulphurEXP_LoRA_fro99-avgrank105.safetensors
 HF_MODEL_VAE1=Kijai/LTX2.3_comfy
 HF_MODEL_VAE_FILENAME1=vae/LTX23_audio_vae_bf16.safetensors
 HF_MODEL_VAE2=Kijai/LTX2.3_comfy
@@ -112,13 +112,9 @@ WORKFLOW_HVRAM2=https://provisioning.rozenlaan.site/ltx/LTX-23-t2v-pod-hvram.jso
 WORKFLOW_LVRAM2=https://provisioning.rozenlaan.site/ltx/LTX-23-t2v-pod-lvram.json
 WORKFLOW_HVRAM3=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod-hvram.json
 WORKFLOW_LVRAM3=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod-lvram.json
-WORKFLOW_HVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-hvram.json
-WORKFLOW_LVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-lvram.json
-WORKFLOW_HVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-hvram.json
-WORKFLOW_LVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-lvram.json
-WORKFLOW_HVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-hvram.json
-WORKFLOW_LVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-lvram.json
-WORKFLOW_HVRAM7=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-sdpose-pod-hvram.json
+WORKFLOW_HVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-hvram.json
+WORKFLOW_LVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-lvram.json
+WORKFLOW_HVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-sdpose-pod-hvram.json
 ```
 
 ## LTX-2 dev checkpoint
