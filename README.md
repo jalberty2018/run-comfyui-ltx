@@ -47,19 +47,21 @@ A streamlined and automated environment for running **ComfyUI** with **LTX-2.3 v
 
 ### Base Images
 
-- **PyTorch Runtime**  [![Docker](https://img.shields.io/docker/v/ls250824/pytorch-cuda-ubuntu-runtime)](https://hub.docker.com/r/ls250824/pytorch-cuda-ubuntu-runtime)ltx
+- **PyTorch Runtime**  [![Docker](https://img.shields.io/docker/v/ls250824/pytorch-cuda-ubuntu-runtime)](https://hub.docker.com/r/ls250824/pytorch-cuda-ubuntu-runtime)
 
 - **ComfyUI Runtime**  [![Docker](https://img.shields.io/docker/v/ls250824/comfyui-runtime)](https://hub.docker.com/r/ls250824/comfyui-runtime)
 
 ### Custom Image
 
-docker pull ls250824/run-comfyui-wan2:<[![Docker Image Version](https://img.shields.io/docker/v/ls250824/run-comfyui-ltx)](https://hub.docker.com/r/ls250824/run-comfyui-ltx)>
+```bash
+docker pull ls250824/run-comfyui-ltx:<tag>
+```
 
 ## 🛠️ Build & Push Docker Image (Optional)
 
-Use none docker setup to build the image using the included Python script.
+Use the included Python script to build and push the Docker image.
 
-### Build Script: `build-docker.py`
+### Build Script: `build_docker.py`
 
 | Argument       | Description                        | Default          |
 |----------------|------------------------------------|------------------|
@@ -71,10 +73,10 @@ Use none docker setup to build the image using the included Python script.
 
 ```bash
 git clone https://github.com/jalberty2018/run-comfyui-ltx.git
-cp ./run-comfyui-ltx/build-docker.py ..
+cp ./run-comfyui-ltx/build_docker.py ..
 
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 
-python3 build-docker.py   --username=<your_dockerhub_username>   --tag=<custom_tag>   --latest   run-comfyui-ltx
+python3 build_docker.py --username=<your_dockerhub_username> --tag=<custom_tag> --latest run-comfyui-ltx
 ```

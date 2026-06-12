@@ -1,6 +1,6 @@
 # Manual provisioning LTX-2.3
 
-- [Kajai](https://huggingface.co/Kijai/LTX2.3_comfy)
+- [Kijai](https://huggingface.co/Kijai/LTX2.3_comfy)
 - [Lightricks](https://huggingface.co/Lightricks/LTX-2.3)
 - [Union-Control](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Union-Control)
 - [Motion-Track-Control](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control)
@@ -11,7 +11,7 @@
 - [Transition Lora](https://huggingface.co/joyfox/LTX-2.3-Transition-LORA)
 - [VBVR Lora](https://huggingface.co/LiconStudio/Ltx2.3-VBVR-lora-I2V)
 - [LipDub Lora](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-LipDub)
-- [Kajai IC loras](https://huggingface.co/Kijai/LTX2-IC-LoRAs)
+- [Kijai IC loras](https://huggingface.co/Kijai/LTX2-IC-LoRAs)
 - [Sulphur](https://huggingface.co/SulphurAI/Sulphur-2-base)
 - [Tenstrip uncensored](https://huggingface.co/TenStrip/LTX2.3-10Eros)
 - [Tenstrip distilled lora](https://huggingface.co/TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments)
@@ -42,14 +42,14 @@ hf download TenStrip/LTX2.3-10Eros 10Eros_v1_fp8_transformer.safetensors \
 
 ## VAE
 
-### Audio bp16
+### Audio bf16
 
 ```bash
 hf download Kijai/LTX2.3_comfy vae/LTX23_audio_vae_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/vae/
 ```
 
-### Video bp16
+### Video bf16
 
 ```bash
 hf download Kijai/LTX2.3_comfy vae/LTX23_video_vae_bf16.safetensors \
@@ -75,44 +75,44 @@ hf download Kijai/LTX2.3_comfy text_encoders/ltx-2.3_text_projection_bf16.safete
 ### Textencoder bf16
 
 ```bash
-hf download Org/ltx-2 split_files/text_encoders/gemma_3_12B_it.safetensors  \
+hf download Comfy-Org/ltx-2 split_files/text_encoders/gemma_3_12B_it.safetensors \
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
 ### Textencoder fp8
 
 ```bash
-hf download Org/ltx-2 split_files/text_encoders/gemma_3_12B_it_fp8_scaled.safetensors  \
+hf download Comfy-Org/ltx-2 split_files/text_encoders/gemma_3_12B_it_fp8_scaled.safetensors \
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
-## CLIP text encoders abliturated
+## CLIP text encoders abliterated
 
 ### FusionCow/Gemma-3-12b-Abliterated-LTX2 bf16 
 
 ```bash
-hf download FusionCow/Gemma-3-12b-Abliterated-LTX2 gemma_ablit_fixed_bf16.safetensors  \
+hf download FusionCow/Gemma-3-12b-Abliterated-LTX2 gemma_ablit_fixed_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
 ### FusionCow/Gemma-3-12b-Abliterated-LTX2 fp8
 
 ```bash
-hf download FusionCow/Gemma-3-12b-Abliterated-LTX2 gemma_ablit_fixed_fp8.safetensors  \
+hf download FusionCow/Gemma-3-12b-Abliterated-LTX2 gemma_ablit_fixed_fp8.safetensors \
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
 ### DreamFast/gemma-3-12b-it-heretic-v2 bf16
 
 ```bash
-hf download DreamFast/gemma-3-12b-it-heretic-v2 comfyui/gemma-3-12b-it-heretic-v2.safetensors  \
+hf download DreamFast/gemma-3-12b-it-heretic-v2 comfyui/gemma-3-12b-it-heretic-v2.safetensors \
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
 ### DreamFast/gemma-3-12b-it-heretic-v2 fp8
 
 ```bash
-hf download DreamFast/gemma-3-12b-it-heretic-v2 comfyui/gemma-3-12b-it-heretic-v2_fp8_e4m3fn.safetensors  \
+hf download DreamFast/gemma-3-12b-it-heretic-v2 comfyui/gemma-3-12b-it-heretic-v2_fp8_e4m3fn.safetensors \
 --local-dir /workspace/ComfyUI/models/text_encoders/
 ```
 
@@ -200,44 +200,44 @@ hf download Comfy-Org/ltx-2.3 split_files/loras/ltx-2.3-id-lora-talkvid-3k.safet
 ## Transition lora
 
 ```bash
-hf download joyfox/LTX-2.3-Transition-LORA ltx2.3-transition.safetensors  \ 
---local-dir /workspace/ComfyUI/models/loras 
+hf download joyfox/LTX-2.3-Transition-LORA ltx2.3-transition.safetensors \
+--local-dir /workspace/ComfyUI/models/loras
 ```
 
 ## VBVR
 
 ```bash
-hf download LiconStudio/Ltx2.3-VBVR-lora-I2V Ltx2.3-Licon-VBVR-I2V-240K-R32.safetensors \ 
+hf download LiconStudio/Ltx2.3-VBVR-lora-I2V Ltx2.3-Licon-VBVR-I2V-240K-R32.safetensors \
   --local-dir /workspace/ComfyUI/models/loras
 ```
 
 ## LipDub (Gated)
 
 ```bash
-hf download Lightricks/LTX-2.3-22b-IC-LoRA-LipDub ltx-2.3-22b-ic-lora-lipdub-0.9.safetensors \ 
-  —local-dir /workspace/ComfyUI/models/loras
+hf download Lightricks/LTX-2.3-22b-IC-LoRA-LipDub ltx-2.3-22b-ic-lora-lipdub-0.9.safetensors \
+  --local-dir /workspace/ComfyUI/models/loras
 ```
 
 ## Realisdance 
 
 ```bash
-hf download Kijai/LTX2-IC-LoRAs realisdance_ltx2.3_ic-lora_step_02000.safetensors \ 
-  —local-dir /workspace/ComfyUI/models/loras
+hf download Kijai/LTX2-IC-LoRAs realisdance_ltx2.3_ic-lora_step_02000.safetensors \
+  --local-dir /workspace/ComfyUI/models/loras
 ```
 
 ## SulphurAI (Uncensor)
 
 ```bash
-hf download SulphurAI/Sulphur-2-base sulphur_lora_rank_768.safetensors \ 
+hf download SulphurAI/Sulphur-2-base sulphur_lora_rank_768.safetensors \
 --local-dir=/workspace/ComfyUI/models/loras
 ```
 
 ```bash
-hf download SulphurAI/Sulphur-2-base experimental/sulphur_experimental_lora_v1.safetensors \ 
+hf download SulphurAI/Sulphur-2-base experimental/sulphur_experimental_lora_v1.safetensors \
 --local-dir=/workspace/ComfyUI/models/loras
 ```
 
 ```bash
-hf download maximsobolev275/LTX-SulphurExperimental-LoRA-Optimized LTX_SulphurEXP_LoRA_fro99-avgrank105.safetensors \ 
+hf download maximsobolev275/LTX-SulphurExperimental-LoRA-Optimized LTX_SulphurEXP_LoRA_fro99-avgrank105.safetensors \
 --local-dir=/workspace/ComfyUI/models/loras
 ```

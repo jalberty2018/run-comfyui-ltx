@@ -1,10 +1,10 @@
 # Manual provisioning LTX-2
 
-- [Lighttricks](https://huggingface.co/Lightricks/LTX-2)
+- [Lightricks](https://huggingface.co/Lightricks/LTX-2)
 - [ComfyUI](https://huggingface.co/Comfy-Org/ltx-2)
-- [Google](google/gemma-3-12b-it-qat-q4_0-unquantized)
-- [Gemma abliturated](https://huggingface.co/FusionCow/Gemma-3-12b-Abliterated-LTX2/)
-- [Kajai](https://huggingface.co/Kijai/LTXV2_comfy)
+- [Google](https://huggingface.co/google/gemma-3-12b-it-qat-q4_0-unquantized)
+- [Gemma Abliterated](https://huggingface.co/FusionCow/Gemma-3-12b-Abliterated-LTX2/)
+- [Kijai](https://huggingface.co/Kijai/LTXV2_comfy)
 
 ## Checkpoints
 
@@ -96,11 +96,11 @@ hf download Comfy-Org/ltx-2 split_files/text_encoders/gemma_3_12B_it_fp4_mixed.s
 - Used by native LXT-2 loader
 
 ```bash
-hf download google/gemma-3-12b-it-qat-q4_0-unquantized \  
+hf download google/gemma-3-12b-it-qat-q4_0-unquantized \
 --local-dir=/workspace/ComfyUI/models/text_encoders/gemma-3-12b-it-qat-q4_0-unquantized
 ```
 
-### Abiturated
+### Abliterated
 
 ### bf16
 
@@ -139,7 +139,7 @@ hf download Lightricks/LTX-2 ltx-2-19b-distilled-lora-384.safetensors \
 - Used with full model
 
 ```bash
-download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora-resized_dynamic_fro095_avg_rank_242_bf16.safetensors \
+hf download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora-resized_dynamic_fro095_avg_rank_242_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 
@@ -148,14 +148,14 @@ download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora-resized_dynamic_fro095
 - Used with full model
 
 ```bash
-download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_bf16.safetensors \
+hf download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_bf16.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 
 ### rank 175 fp8
 
 ```bash
-download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_fp8.safetensors \
+hf download Kijai/LTXV2_comfy loras/ltx-2-19b-distilled-lora_resized_dynamic_fro09_avg_rank_175_fp8.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 

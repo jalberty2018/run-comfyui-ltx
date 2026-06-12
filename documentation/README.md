@@ -3,15 +3,15 @@
 ## Pre-Installed Custom Nodes
 
 - Open ComfyUI manager installed custom nodes.
-- [custom_nodes](docs/ComfyUI_LTX_custom_nodes.md)
+- [custom_nodes](../docs/ComfyUI_LTX_custom_nodes.md)
 
 ## Documentation
 
-- [Model provisioning](docs/ComfyUI_LTX_provisioning.md)
-- [Resources](docs/ComfyUI_LTX_resources.md)
-- [Image setup](docs/ComfyUI_LTX_image_setup.md)
-- [Environment variables](docs/ComfyUI_LTX_configuration.md)
-- [Hardware Requirements](docs/ComfyUI_LTX_hardware.md)
+- [Model provisioning](../docs/ComfyUI_LTX_provisioning.md)
+- [Resources](../docs/ComfyUI_LTX_resources.md)
+- [Image setup](../docs/ComfyUI_LTX_image_setup.md)
+- [Environment variables](../docs/ComfyUI_LTX_configuration.md)
+- [Hardware Requirements](../docs/ComfyUI_LTX_hardware.md)
 - [Tutorial](https://comfyui.rozenlaan.site/ComfyUI_LTX_tutorial/)
 - [Update](https://comfyui.rozenlaan.site/ComfyUI_LTX_update/)
 
@@ -83,7 +83,7 @@ python /workspace/test/test_pytorch_cuda.py
 python /workspace/test/test_flash.py
 python /workspace/test/test_sage.py
 python /workspace/test/test_torch_generic_nms.py
-python /workspace/test/test_llmama_cpp.py
-python /workspace/test/test/environment.py
+python /workspace/test/test_llama_cpp.py
+python /workspace/test/test_environment.py
 python /workspace/test/test_environment_runpod.py
 ```

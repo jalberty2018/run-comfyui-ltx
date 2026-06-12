@@ -20,7 +20,7 @@
 
 ## Images on Docker 
 
-- If the image is **less then one day old** it is possible that it is not tested or will be updated.
+- If the image is **less than one day old** it is possible that it is not tested or will be updated.
 
 ## Template Deployment on Runpod
 
