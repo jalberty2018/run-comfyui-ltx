@@ -158,7 +158,7 @@ hf download TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments ltx-2.3-22b-distilled
 ### Sulphur
 
 ```bash
-hf download SulphurAI/Sulphur-2-base ltx-distill_loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors \
+hf download SulphurAI/Sulphur-2-base distill_loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors \
 --local-dir /workspace/ComfyUI/models/loras/
 ```
 
