@@ -21,13 +21,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 WORKDIR /ComfyUI/custom_nodes
 
 RUN --mount=type=cache,target=/root/.cache/git \
-    git clone --depth=1 --filter=blob:none --branch v.1.0.0 https://github.com/rgthree/rgthree-comfy.git && \
-    git clone --depth=1 --filter=blob:none --branch v1.6.0 https://github.com/Azornes/Comfyui-Resolution-Master.git && \
-    git clone --depth=1 --filter=blob:none --branch v2.0.0 https://github.com/GizmoR13/PG-Nodes.git && \
-    git clone --depth=1 --filter=blob:none --branch v1.1.1 https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
-    git clone --depth=1 --filter=blob:none --branch v0.5.3 https://github.com/Saganaki22/ComfyUI-FishAudioS2.git && \
-    git clone --depth=1 --filter=blob:none --branch v1.3.5 https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git && \
-    git clone --depth=1 --filter=blob:none --branch v1.3.6 https://github.com/yolain/ComfyUI-Easy-Use.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/rgthree/rgthree-comfy.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/Azornes/Comfyui-Resolution-Master.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/GizmoR13/PG-Nodes.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/Saganaki22/ComfyUI-FishAudioS2.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git && \
+    git clone --depth=1 --filter=blob:none https://github.com/yolain/ComfyUI-Easy-Use.git && \
     git clone --depth=1 --filter=blob:none https://github.com/liusida/ComfyUI-Login.git && \
     git clone --depth=1 --filter=blob:none https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-KJNodes.git && \
