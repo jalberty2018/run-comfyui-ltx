@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 # run-comfyui-ltx
-FROM ls250824/comfyui-runtime:04062026
+FROM ls250824/comfyui-runtime:16062026
 
 # Set Working Directory
 WORKDIR /ComfyUI
@@ -21,7 +21,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 WORKDIR /ComfyUI/custom_nodes
 
 RUN --mount=type=cache,target=/root/.cache/git \
-    git clone --depth=1 --filter=blob:none https://github.com/rgthree/rgthree-comfy.git && \
+    git clone --depth=1 --filter=blob:none --branch v.1.0.0 https://github.com/rgthree/rgthree-comfy.git && \
+    git clone --depth=1 --filter=blob:none --branch v1.6.0 https://github.com/Azornes/Comfyui-Resolution-Master.git && \
+    git clone --depth=1 --filter=blob:none --branch v2.0.0 https://github.com/GizmoR13/PG-Nodes.git && \
+    git clone --depth=1 --filter=blob:none --branch v1.1.1 https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
+    git clone --depth=1 --filter=blob:none --branch v0.5.3 https://github.com/Saganaki22/ComfyUI-FishAudioS2.git && \
+    git clone --depth=1 --filter=blob:none --branch v1.3.5 https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git && \
+    git clone --depth=1 --filter=blob:none --branch v1.3.6 https://github.com/yolain/ComfyUI-Easy-Use.git && \
     git clone --depth=1 --filter=blob:none https://github.com/liusida/ComfyUI-Login.git && \
     git clone --depth=1 --filter=blob:none https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-KJNodes.git && \
@@ -29,19 +35,16 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/ClownsharkBatwing/RES4LYF.git && \
     git clone --depth=1 --filter=blob:none https://github.com/evanspearman/ComfyMath.git && \
     git clone --depth=1 --filter=blob:none https://github.com/city96/ComfyUI-GGUF.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/Azornes/Comfyui-Resolution-Master.git && \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-segment-anything-2.git && \
     git clone --depth=1 --filter=blob:none https://github.com/1038lab/ComfyUI-RMBG.git && \
     git clone --depth=1 --filter=blob:none https://github.com/Fannovel16/comfyui_controlnet_aux.git && \
     git clone --depth=1 --filter=blob:none https://github.com/liusida/ComfyUI-AutoCropFaces.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/GizmoR13/PG-Nodes.git && \
     git clone --depth=1 --filter=blob:none https://github.com/vrgamegirl19/comfyui-vrgamedevgirl.git && \
     git clone --depth=1 --filter=blob:none https://github.com/BigStationW/ComfyUi-Scale-Image-to-Total-Pixels-Advanced.git && \
     git clone --depth=1 --filter=blob:none https://github.com/x3bits/ComfyUI-Power-Flow.git && \
     git clone --depth=1 --filter=blob:none https://github.com/9nate-drake/Comfyui-SecNodes.git && \
     git clone --depth=1 --filter=blob:none https://github.com/PozzettiAndrea/ComfyUI-SAM3.git && \
     git clone --depth=1 --filter=blob:none https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
     git clone --depth=1 --filter=blob:none https://github.com/rethink-studios/comfyui-model-linker-desktop.git && \
     git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
     git clone --depth=1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials.git && \
@@ -52,11 +55,8 @@ RUN --mount=type=cache,target=/root/.cache/git \
     git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-PromptRelay.git && \
     git clone --depth=1 --filter=blob:none https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git  && \
     git clone --depth=1 --filter=blob:none https://github.com/wuwukaka/ComfyUI-BodyRatioMapper.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/yolain/ComfyUI-Easy-Use.git && \
 	git clone --depth=1 --filter=blob:none https://github.com/afloy011-spec/afloy_audio_tools.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/Saganaki22/ComfyUI-FishAudioS2.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/TenStrip/10S-Comfy-nodes.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git
+    git clone --depth=1 --filter=blob:none https://github.com/TenStrip/10S-Comfy-nodes.git
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT
@@ -86,11 +86,18 @@ WORKDIR /ComfyUI/custom_nodes/IAMCCS-nodes
 # 1.3.6
 RUN git fetch --unshallow && git checkout 4dd640ca6b8564976a8cb62be59a50d83677cdd6
 
+WORKDIR /ComfyUI/custom_nodes/ComfyUI-MelBandRoFormer
+# 1.0.2, last changed before 2026-06-04. Keep pinned because it imports rotary_embedding_torch at runtime.
+RUN git fetch --depth=1 origin 92c86854e6654f4aacc97484471af95c98ea16d4 && \
+    git checkout 92c86854e6654f4aacc97484471af95c98ea16d4
+
 WORKDIR /
 # Install Dependencies global
 RUN --mount=type=cache,target=/root/.cache/pip \
   python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
-  diffusers psutil pydantic pydantic-settings "descript-audiotools>=0.7.2" "descript-audio-codec"
+  diffusers psutil pydantic pydantic-settings "descript-audiotools>=0.7.2" "descript-audio-codec" \
+  "rotary-embedding-torch==0.8.9" && \
+  python -c "import rotary_embedding_torch"
 
 # Install Dependencies for Cloned Repositories
 WORKDIR /ComfyUI/custom_nodes
@@ -193,7 +200,7 @@ WORKDIR /workspace
 EXPOSE 8188 9000
 
 # Labels
-LABEL org.opencontainers.image.title="ComfyUI 0.24.0 for LTX-2.x inference" \
+LABEL org.opencontainers.image.title="ComfyUI 0.25.0 for LTX-2.x inference" \
       org.opencontainers.image.description="ComfyUI + internal manager + flash-attn + sageattention + onnxruntime-gpu + torch_generic_nms + code-server + civitai downloader + huggingface_hub + custom_nodes" \
       org.opencontainers.image.source="https://hub.docker.com/r/ls250824/run-comfyui-wan2" \
       org.opencontainers.image.licenses="MIT"
