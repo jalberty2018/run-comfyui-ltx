@@ -1,17 +1,20 @@
 # Pod LTX-2
 
-## Pre-Installed Custom Nodes
+## Pre-Installed Custom Nodes for this build cloned on docker image tag
 
 - Open ComfyUI manager installed custom nodes.
 - [custom_nodes](docs/ComfyUI_LTX_custom_nodes.md)
 
-## Documentation
+## Documentation for this build
 
 - [Model provisioning](docs/ComfyUI_LTX_provisioning.md)
 - [Resources](docs/ComfyUI_LTX_resources.md)
 - [Image setup](docs/ComfyUI_LTX_image_setup.md)
 - [Environment variables](docs/ComfyUI_LTX_configuration.md)
 - [Hardware Requirements](docs/ComfyUI_LTX_hardware.md)
+
+## Documentation on rozenlaan.site
+
 - [Tutorial](https://comfyui.rozenlaan.site/ComfyUI_tutorial/)
 - [Update](https://comfyui.rozenlaan.site/ComfyUI_LTX_update/)
 
@@ -19,7 +22,7 @@
 
 - Open from ComfyUI's interface on the left
 
-#### **Huggingface**  
+## **Huggingface**  
 
 ```bash
 export HF_TOKEN="xxxxx"
@@ -31,7 +34,7 @@ hf upload model /workspace/model.safetensors
 hf auth login --token xxxxx
 ```
 
-#### **CivitAI**  
+## **CivitAI**  
 
 ```bash
 export CIVITAI_TOKEN="xxxxx"
@@ -76,6 +79,7 @@ age        # encryption
 7z         # Archiving
 runpodctl  # runpod pod management
 ```
+
 ## Test/debug
 
 ```bash
