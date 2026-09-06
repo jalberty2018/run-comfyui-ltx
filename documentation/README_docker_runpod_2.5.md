@@ -1,67 +1,75 @@
-# Run LTX-2.5 with ComfyUI provisioning on RunPod
+# One Click - LTX 2.5 video and audio with uncensored Gemma-4
 
-This image runs ComfyUI 0.32.0+ with native LTX-2.5 support. Models, LoRAs,
-VAEs, text encoders, upscalers, patches, and workflows can be provisioned at
-pod startup through environment variables.
+Create text-to-video and image-to-video in ComfyUI with the LTX 2.5 generation chain. The transformer, distilled LoRA, audio/video VAEs, latent upscalers, duration patch, custom nodes and workflows are provisioned automatically.
 
-## Features
+**Uncensored prompting:** this template uses the uncensored Heretic Gemma-4-12B text encoder without an additional prompt-filtering layer. INT8 ConvRot or BF16 encoder profiles are selected for the available VRAM. Users remain responsible for model use and generated content.
 
-- Complete LTX-2.x chain
-- Public ungated LTX-2.5 model chain from `comfyicu/LTX-2.5`.
-- Community Heretic BF16 and int8-convrot text encoder profiles.
-- Video and audio VAEs, spatial and temporal latent upscalers, and duration
-  head patch.
-- CUDA 12.8 runtime with compiled attention and GPU acceleration packages.
-- ComfyUI, Code Server, SSH, LoRA Manager, Hugging Face, and CivitAI support.
+## Why a separate template?
 
-## RunPod deployment
+This template downloads LTX 2.5, not the larger LTX 2.3 workflow collection. Separating the versions avoids unnecessary models, storage use and provisioning time.
 
-### Template
+## Choose LTX 2.5 or 2.3
 
-- [**👉 One-click Deploy on RunPod LTX-2.5 i2v/t2v vi2v/vt2v dev INT8 ConvRot**](https://console.runpod.io/deploy?template=ka3hvli4kf&ref=se4tkc5o)
-- [**👉 One-click Deploy on RunPod LTX-2.3 i2v/t2v vi2v/vt2v dev bf16/fp8**](https://console.runpod.io/deploy?template=p4f6rm9tb4&ref=se4tkc5o)
+| Version | Choose it for | Main difference |
+|---|---|---|
+| **LTX 2.5 — this template** | The newer LTX generation chain | Focused T2V/I2V workflows, duration patch and spatial/temporal upscalers |
+| [LTX 2.3](https://console.runpod.io/deploy?template=p4f6rm9tb4&ref=se4tkc5o) | Broad workflows and advanced control | Motion transfer, camera control, identity/reference-audio and three-pass workflows |
 
-## GPU and precision selection
+## Model profiles
 
-The supplied profiles use `VRAM_THRESHOLD=40`. The startup script selects the
-HVRAM model set when detected VRAM is greater than this value, so an L40S uses
-the HVRAM profile. Both model sets use the comfyicu Dev INT8 ConvRot
-transformer. The selection changes only the Heretic text encoder from INT8
-ConvRot to BF16.
+Both profiles use an INT8 ConvRot transformer. With `VRAM_THRESHOLD=40`, GPUs above 40 GB select the BF16 Heretic text encoder; other GPUs use INT8 ConvRot.
 
-| Typical GPU | VRAM | Model set | Transformer | Heretic text encoder |
-|-------------|------|-----------|-------------|----------------------|
-| RTX 3090 / RTX 4090 | 24 GB | LVRAM | comfyicu Dev INT8 ConvRot | INT8 ConvRot |
-| RTX 5090 | 32 GB | LVRAM | comfyicu Dev INT8 ConvRot | INT8 ConvRot |
-| L40S | 48 GB nominal | HVRAM | comfyicu Dev INT8 ConvRot | BF16 |
-| RTX PRO 6000 Blackwell | 96 GB | HVRAM | comfyicu Dev INT8 ConvRot | BF16 |
+The public profile uses ungated community-hosted LTX 2.5 components. A private profile can use gated `Lightricks/LTX-2.5` components and requires an authorized Hugging Face token.
 
-Every public ungated LTX-2.5 model component comes from
-[`comfyicu/LTX-2.5`](https://huggingface.co/comfyicu/LTX-2.5). The uncensored
-Heretic BF16 and INT8 ConvRot text encoders remain sourced from
-`DeepNeuralNerd`. The private profile requires access to `Lightricks/LTX-2.5`
-and a Hugging Face token.
+## Start here
 
-## Storage requirements
+1. [Deploy the LTX 2.5 template](https://console.runpod.io/deploy?template=ka3hvli4kf&ref=se4tkc5o).
+2. Choose a supported NVIDIA GPU and sufficient Pod RAM.
+3. Use at least 80 GB persistent volume storage as a practical starting point.
+4. Set `PASSWORD` and any required download tokens.
+5. Deploy and follow the container logs.
+6. Wait for `Provisioning done, ready to create AI content` before opening ComfyUI.
+7. Load the supplied T2V or I2V workflow and run a small first test.
 
-The complete selected chain requires approximately:
+## Included components
 
-| Profile components | Model storage guidance |
-|--------------------|------------------------|
-| Public Dev INT8 ConvRot with Heretic encoder | Allow at least 60 GB |
-| Optional prompt enhancer | Additional 10 GB |
+- LTX 2.5 INT8 ConvRot transformer and distilled LoRA.
+- Uncensored Heretic Gemma-4 encoder in BF16 or INT8 ConvRot.
+- Video, convolutional-video and audio VAEs.
+- Spatial and temporal 2× latent upscalers.
+- Duration-head patch.
+- Ready-to-use text-to-video and image-to-video workflows.
+- CUDA 12.8 with compiled attention and GPU acceleration.
+- ComfyUI, Code Server, LoRA Manager and SSH.
+- Persistent `/workspace` storage.
 
-Reserve additional `/workspace` capacity for ComfyUI, custom nodes, caches,
-input media, and generated videos. A persistent volume of at least 80 GB is a
-practical starting point; larger video jobs can require substantially more.
+## Hardware and storage
 
-## Documentation
+| Typical GPU | VRAM | Model set | Text encoder |
+|---|---:|---|---|
+| RTX 3090 / 4090 | 24 GB | Low VRAM | INT8 ConvRot |
+| RTX 5090 | 32 GB | Low VRAM | INT8 ConvRot |
+| L40S | 48 GB | High VRAM | BF16 |
+| RTX PRO 6000 Blackwell | 96 GB | High VRAM | BF16 |
 
-- [Start](https://comfyui.rozenlaan.site/ComfyUI_LTX/)
-- [Tutorial](https://comfyui.rozenlaan.site/ComfyUI_LTX_tutorial/)
+Allow at least **60 GB** for the model chain and more for inputs, caches and outputs. An optional prompt enhancer requires approximately **10 GB extra**. The template currently reserves **80 GB volume** and **15 GB container disk**.
 
-## Other pods
+## Configuration
 
-- [WAN](https://comfyui.rozenlaan.site/ComfyUI_WAN/)
-- [Image models](https://comfyui.rozenlaan.site/ComfyUI_image/)
-- [MiniMax](https://comfyui.rozenlaan.site/ComfyUI_MiniMax/)
+| Variable | When needed | Purpose |
+|---|---|---|
+| `PASSWORD` | Required | Protects Code Server and pod tools |
+| `HF_TOKEN` | Gated/private or rate-limited downloads | Hugging Face authentication |
+| `CIVITAI_TOKEN` | CivitAI downloads | Model and LoRA authentication |
+
+Store tokens as RunPod secrets. Do not publish them in workflows or screenshots.
+
+## Documentation and other templates
+
+- [LTX overview](https://comfyui.rozenlaan.site/ComfyUI_LTX/)
+- [ComfyUI tutorial](https://comfyui.rozenlaan.site/ComfyUI_tutorial/)
+- [Hardware guide](https://comfyui.rozenlaan.site/ComfyUI_LTX_hardware/)
+- [RunPod deployment guide](https://comfyui.rozenlaan.site/Runpod_pod_deployment/)
+- [LTX 2.3 template](https://console.runpod.io/deploy?template=p4f6rm9tb4&ref=se4tkc5o)
+- [WAN video](https://comfyui.rozenlaan.site/ComfyUI_WAN/)
+- [MiniMax H3 video](https://comfyui.rozenlaan.site/ComfyUI_MiniMax/)

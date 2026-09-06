@@ -1,67 +1,69 @@
-# Run LTX-2.3 with ComfyUI with provisioning
+# One Click - LTX 2.3 video and audio with uncensored Gemma
 
-## Features
+Create text-to-video, image-to-video and guided video transformations in ComfyUI. LTX 2.3, audio/video VAEs, LoRAs, control models, custom nodes and workflows are provisioned automatically.
 
-- Automatic model and LoRA provisioning via environment variables.
-- [Kijai models no checkpoint](https://huggingface.co/Kijai/LTX2.3_comfy)
-- Included workflows for **video generation** and **enhancement** using pre-installed custom nodes based on [RuneXX](https://huggingface.co/RuneXX/LTX-2.3-Workflows).
-- Compatible with high-performance NVIDIA GPUs (CUDA 12.8).
-- Compiled attentions and GPU accelerations.
-- Automatic selecting bf16 or fp8 models/workflows.
-- Latent preview enabled for both samplers.
-- Lora manager
+**Uncensored prompting:** this template uses the Heretic Gemma-3-12B text encoder without an additional prompt-filtering layer. BF16 and reduced-precision profiles are selected for the available VRAM. Users remain responsible for model use and generated content.
 
-## Built-in **authentication**
-  
-- ComfyUI
-- Code Server
-- HuggingFace API
-- CivitAI API
+## Why a separate template?
 
-## Images on Docker 
+This template downloads LTX 2.3 and its advanced workflow components, not LTX 2.5. Separating the versions avoids unnecessary models, storage use and provisioning time.
 
-- If the image is **less than one day old** it is possible that it is not tested or will be updated.
+## Choose LTX 2.3 or 2.5
 
-## Template Deployment on Runpod
+| Version | Choose it for | Main difference |
+|---|---|---|
+| **LTX 2.3 — this template** | Broad workflows and advanced control | Motion transfer, camera control, identity/reference-audio and three-pass workflows |
+| [LTX 2.5](https://console.runpod.io/deploy?template=ka3hvli4kf&ref=se4tkc5o) | The newer LTX generation chain | Focused T2V/I2V workflows, duration patch and spatial/temporal upscalers |
 
-### Deployment/Usage information
+## Start here
 
-- All available templates on runpod are tested on compatible GPU´s see below.
-- Specific models/loras/workflows for the templates are downloaded when the pod starts.
-- Avoid pods without region they are unstable.
+1. [Deploy the LTX 2.3 template](https://console.runpod.io/deploy?template=p4f6rm9tb4&ref=se4tkc5o).
+2. Choose a supported NVIDIA GPU and sufficient Pod RAM.
+3. Use a persistent volume with enough space for models, inputs and outputs.
+4. Set `PASSWORD` and any required download tokens.
+5. Avoid Pods without a region; they can be unstable.
+6. Deploy and follow the container logs.
+7. Wait for `Provisioning done, ready to create AI content` before opening ComfyUI.
+8. Load a supplied LTX 2.3 workflow and run a small first test.
 
-### Template
+## Included workflows and tools
 
-- [**👉 One-click Deploy on RunPod LTX-2.5 i2v/t2v vi2v/vt2v dev bf16/int8 convrot**](https://console.runpod.io/deploy?template=ka3hvli4kf&ref=se4tkc5o)
-- [**👉 One-click Deploy on RunPod LTX-2.3 i2v/t2v vi2v/vt2v dev bf16/fp8**](https://console.runpod.io/deploy?template=p4f6rm9tb4&ref=se4tkc5o)
+- Text-to-video and image-to-video.
+- Three-pass generation and enhancement.
+- Image/video-guided body-motion transfer.
+- Camera-motion transfer with IC-Cameraman LoRA.
+- Identity LoRAs with reference audio.
+- SDPose body control and person detection.
+- Distilled, union-control, motion-track and camera LoRAs.
+- Latent preview, spatial upscaling and audio separation.
+- ComfyUI, Code Server, LoRA Manager and SSH.
+- Persistent `/workspace` storage.
 
-## Documentation
+## Tested hardware
 
-- [Start](https://comfyui.rozenlaan.site/ComfyUI_LTX/)
-- [Tutorial](https://comfyui.rozenlaan.site/ComfyUI_tutorial/)
+| Profile | Tested GPU | Precision | Pod RAM | Tested output |
+|---|---|---|---:|---|
+| High VRAM | L40S / RTX 6000 Ada | BF16 | 60 GB | 1920×1088, 20 s, 24 fps |
+| Low VRAM | RTX A5000 / RTX 4090 | FP8 mixed | 50 GB | 1280×736, 20 s, 24 fps |
 
-## Hardware tested
+Actual limits depend on workflow, resolution, duration and offloading. The RunPod template currently reserves **110 GB volume** and **15 GB container disk**.
 
-### LTX 2.3 bf16
+## Configuration
 
-- precision bf16
-- video settings 1920x1088 20sec 24fps
+| Variable | When needed | Purpose |
+|---|---|---|
+| `PASSWORD` | Required | Protects Code Server and pod tools |
+| `HF_TOKEN` | Gated/private or rate-limited downloads | Hugging Face authentication |
+| `CIVITAI_TOKEN` | CivitAI downloads | Model and LoRA authentication |
 
-| GPU          | VRAM  | RAM |
-|--------------------------|-------|-------------------------|
-| L40S / RTX 6000 Ada | 45Gb | 60Gb           |
+Store tokens as RunPod secrets. Do not publish them in workflows or screenshots.
 
-### LTX 2.3 fp8
+## Documentation and other templates
 
-- precision fp8 mixed
-- video settings 1280x736 20sec 24fps
-
-| GPU          | VRAM  | RAM |
-|--------------------------|-------|-------------------------|
-| RTX A5000 / RTX 4090 | 24Gb | 50Gb           |
-
-## Other pods
-
-- [WAN 2.2](https://comfyui.rozenlaan.site/ComfyUI_WAN/)
-- [Image models](https://comfyui.rozenlaan.site/ComfyUI_image/)
-- [Minimax](https://comfyui.rozenlaan.site/ComfyUI_MiniMax/)
+- [LTX overview](https://comfyui.rozenlaan.site/ComfyUI_LTX/)
+- [ComfyUI tutorial](https://comfyui.rozenlaan.site/ComfyUI_tutorial/)
+- [Hardware guide](https://comfyui.rozenlaan.site/ComfyUI_LTX_hardware/)
+- [RunPod deployment guide](https://comfyui.rozenlaan.site/Runpod_pod_deployment/)
+- [LTX 2.5 template](https://console.runpod.io/deploy?template=ka3hvli4kf&ref=se4tkc5o)
+- [WAN video](https://comfyui.rozenlaan.site/ComfyUI_WAN/)
+- [MiniMax H3 video](https://comfyui.rozenlaan.site/ComfyUI_MiniMax/)

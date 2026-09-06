@@ -113,19 +113,13 @@ HF_MODEL_CHECKPOINTS_FILENAME1=checkpoints/sdpose_wholebody_fp16.safetensors
 HF_MODEL1=deepghs/real_person_detection
 HF_MODEL_FILENAME1=person_detect_v0_l_yv11/model.pt
 HF_MODEL_DIR1=models/yolo
-WORKFLOW_HVRAM1=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-pod-hvram.json
-WORKFLOW_LVRAM1=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-pod-lvram.json
-WORKFLOW_HVRAM2=https://provisioning.rozenlaan.site/ltx/LTX-23-t2v-pod-hvram.json
-WORKFLOW_LVRAM2=https://provisioning.rozenlaan.site/ltx/LTX-23-t2v-pod-lvram.json
-WORKFLOW_HVRAM3=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod-hvram.json
-WORKFLOW_LVRAM3=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod-lvram.json
-WORKFLOW_HVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-hvram.json
-WORKFLOW_LVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod-lvram.json
-WORKFLOW_HVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-hvram.json
-WORKFLOW_LVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod-lvram.json
-WORKFLOW_HVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-hvram.json
-WORKFLOW_LVRAM6=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-lvram.json
-WORKFLOW_HVRAM7=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-sdpose-pod-hvram.json
+WORKFLOW1=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-pod.json
+WORKFLOW2=https://provisioning.rozenlaan.site/ltx/LTX-23-t2v-pod.json
+WORKFLOW3=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod.json
+WORKFLOW4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod.json
+WORKFLOW5=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod.json
+WORKFLOW6=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod.json
+WORKFLOW7=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-sdpose-pod.json
 ```
 
 ### Private
@@ -173,15 +167,13 @@ HF_MODEL_CHECKPOINTS_FILENAME1=checkpoints/sdpose_wholebody_fp16.safetensors
 HF_MODEL1=deepghs/real_person_detection
 HF_MODEL_FILENAME1=person_detect_v0_l_yv11/model.pt
 HF_MODEL_DIR1=models/yolo
-WORKFLOW_HVRAM1=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-pod-hvram.json
-WORKFLOW_LVRAM1=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-pod-lvram.json
-WORKFLOW_HVRAM2=https://provisioning.rozenlaan.site/ltx/LTX-23-t2v-pod-hvram.json
-WORKFLOW_LVRAM2=https://provisioning.rozenlaan.site/ltx/LTX-23-t2v-pod-lvram.json
-WORKFLOW_HVRAM3=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod-hvram.json
-WORKFLOW_LVRAM3=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod-lvram.json
-WORKFLOW_HVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-hvram.json
-WORKFLOW_LVRAM4=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod-lvram.json
-WORKFLOW_HVRAM5=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-sdpose-pod-hvram.json
+WORKFLOW1=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-pod.json
+WORKFLOW2=https://provisioning.rozenlaan.site/ltx/LTX-23-t2v-pod.json
+WORKFLOW3=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-pod.json
+WORKFLOW4=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_camera_movements_IC-Cameraman_lora-pod.json
+WORKFLOW5=https://provisioning.rozenlaan.site/ltx/LTX-23-i2v-t2v-3Pass-pod.json
+WORKFLOW6=https://provisioning.rozenlaan.site/ltx/LTX-23-I2V-T2V-ID-Lora_reference_audio-pod.json
+WORKFLOW7=https://provisioning.rozenlaan.site/ltx/LTX-23-IV2V-TV2V_transfer_body_movements-sdpose-pod.json
 ```
 
 ## LTX-2 dev checkpoint
