@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 # run-comfyui-ltx
-FROM ls250824/comfyui-runtime2:26082026
+FROM ls250824/comfyui-runtime2:09092026
 
 # Set Working Directory
 WORKDIR /ComfyUI
@@ -20,44 +20,48 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Clone
 WORKDIR /ComfyUI/custom_nodes
 
-RUN --mount=type=cache,target=/root/.cache/git \
-    git clone --depth=1 --filter=blob:none https://github.com/rgthree/rgthree-comfy.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/Azornes/Comfyui-Resolution-Master.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/GizmoR13/PG-Nodes.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/willmiao/ComfyUI-Lora-Manager.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/Saganaki22/ComfyUI-FishAudioS2.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/yolain/ComfyUI-Easy-Use.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/liusida/ComfyUI-Login.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-KJNodes.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/ClownsharkBatwing/RES4LYF.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/evanspearman/ComfyMath.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/city96/ComfyUI-GGUF.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-segment-anything-2.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/1038lab/ComfyUI-RMBG.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/Fannovel16/comfyui_controlnet_aux.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/liusida/ComfyUI-AutoCropFaces.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/vrgamegirl19/comfyui-vrgamedevgirl.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/BigStationW/ComfyUi-Scale-Image-to-Total-Pixels-Advanced.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/x3bits/ComfyUI-Power-Flow.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/9nate-drake/Comfyui-SecNodes.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/PozzettiAndrea/ComfyUI-SAM3.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/Lightricks/ComfyUI-LTXVideo.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/cubiq/ComfyUI_essentials.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/princepainter/ComfyUI-PainterLTXV2.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/IAMCCS/IAMCCS-nodes.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/WASasquatch/was_affine.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-MelBandRoFormer.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/kijai/ComfyUI-PromptRelay.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git  && \
-    git clone --depth=1 --filter=blob:none https://github.com/wuwukaka/ComfyUI-BodyRatioMapper.git && \
-	git clone --depth=1 --filter=blob:none https://github.com/afloy011-spec/afloy_audio_tools.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/kianxyzw/comfyui-model-linker.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/TenStrip/10S-Comfy-nodes.git && \
-    git clone --depth=1 --filter=blob:none https://github.com/obvpm/comfyui-obvpm.git
+# Build-only setting; HTTP/1.1 is a transport workaround, not an auth fix.
+# Override with --build-arg GIT_HTTP_VERSION=HTTP/2 when appropriate.
+ARG GIT_HTTP_VERSION=HTTP/1.1
+# Separate layers retain successful clones when a later repository fails.
+# Shallow full checkouts avoid the extra lazy blob fetch of --filter=blob:none.
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/rgthree/rgthree-comfy.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/Azornes/Comfyui-Resolution-Master.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/GizmoR13/PG-Nodes.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/willmiao/ComfyUI-Lora-Manager.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/Saganaki22/ComfyUI-FishAudioS2.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/yolain/ComfyUI-Easy-Use.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/liusida/ComfyUI-Login.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/kijai/ComfyUI-KJNodes.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/ClownsharkBatwing/RES4LYF.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/evanspearman/ComfyMath.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/city96/ComfyUI-GGUF.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/kijai/ComfyUI-segment-anything-2.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/1038lab/ComfyUI-RMBG.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/Fannovel16/comfyui_controlnet_aux.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/liusida/ComfyUI-AutoCropFaces.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/vrgamegirl19/comfyui-vrgamedevgirl.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/BigStationW/ComfyUi-Scale-Image-to-Total-Pixels-Advanced.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/x3bits/ComfyUI-Power-Flow.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/9nate-drake/Comfyui-SecNodes.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/PozzettiAndrea/ComfyUI-SAM3.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/Lightricks/ComfyUI-LTXVideo.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/cubiq/ComfyUI_essentials.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/princepainter/ComfyUI-PainterLTXV2.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/IAMCCS/IAMCCS-nodes.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/WASasquatch/was_affine.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/kijai/ComfyUI-MelBandRoFormer.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/kijai/ComfyUI-PromptRelay.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/wuwukaka/ComfyUI-BodyRatioMapper.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/afloy011-spec/afloy_audio_tools.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/kianxyzw/comfyui-model-linker.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/TenStrip/10S-Comfy-nodes.git
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/chanon/comfyui-obvpm.git
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
 # Rewrite any top-level CPU ORT refs to GPU ORT
@@ -74,7 +78,7 @@ RUN set -eux; \
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-SAM3
 # Working version for SAM3 (comfy-env problems)
-RUN git fetch --unshallow && git checkout 5c0474e292e3658645f46e46378d58935a82692f
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" fetch --depth=1 origin 5c0474e292e3658645f46e46378d58935a82692f && git checkout --detach 5c0474e292e3658645f46e46378d58935a82692f
 # Pixi problem SAM3
 RUN sed -i '/^comfy-env/d' requirements.txt
 RUN sed -i '/^comfy-test/d' requirements.txt
@@ -85,12 +89,12 @@ RUN sed -i '/^onnxruntime/d' requirements.txt
 
 WORKDIR /ComfyUI/custom_nodes/IAMCCS-nodes
 # 1.3.6
-RUN git fetch --unshallow && git checkout 4dd640ca6b8564976a8cb62be59a50d83677cdd6
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" fetch --depth=1 origin 4dd640ca6b8564976a8cb62be59a50d83677cdd6 && git checkout --detach 4dd640ca6b8564976a8cb62be59a50d83677cdd6
 
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-MelBandRoFormer
 # 1.0.2, last changed before 2026-06-04. Keep pinned because it imports rotary_embedding_torch at runtime.
-RUN git fetch --depth=1 origin 92c86854e6654f4aacc97484471af95c98ea16d4 && \
-    git checkout 92c86854e6654f4aacc97484471af95c98ea16d4
+RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" fetch --depth=1 origin 92c86854e6654f4aacc97484471af95c98ea16d4 && \
+    git checkout --detach 92c86854e6654f4aacc97484471af95c98ea16d4
 
 WORKDIR /
 # Install Dependencies global
@@ -106,23 +110,23 @@ WORKDIR /ComfyUI/custom_nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
   python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
     -r ComfyUI-Login/requirements.txt \
-	-r ComfyUI-VideoHelperSuite/requirements.txt \
-	-r ComfyUI-KJNodes/requirements.txt \
-	-r comfyui-vrgamedevgirl/requirements.txt \
-	-r RES4LYF/requirements.txt \
-	-r ComfyUI-GGUF/requirements.txt \
-	-r ComfyUI-RMBG/requirements.txt \
-	-r comfyui_controlnet_aux/requirements.txt \
-	-r Comfyui-SecNodes/requirements.txt \
-	-r ComfyUI-outputlists-combiner/requirements.txt \
-	-r ComfyUI-LTXVideo/requirements.txt \
-	-r ComfyUI-Lora-Manager/requirements.txt \
-	-r ComfyUI-SAM3/requirements.txt \
-	-r ComfyUI-MelBandRoFormer/requirements.txt \
+    -r ComfyUI-VideoHelperSuite/requirements.txt \
+    -r ComfyUI-KJNodes/requirements.txt \
+    -r comfyui-vrgamedevgirl/requirements.txt \
+    -r RES4LYF/requirements.txt \
+    -r ComfyUI-GGUF/requirements.txt \
+    -r ComfyUI-RMBG/requirements.txt \
+    -r comfyui_controlnet_aux/requirements.txt \
+    -r Comfyui-SecNodes/requirements.txt \
+    -r ComfyUI-outputlists-combiner/requirements.txt \
+    -r ComfyUI-LTXVideo/requirements.txt \
+    -r ComfyUI-Lora-Manager/requirements.txt \
+    -r ComfyUI-SAM3/requirements.txt \
+    -r ComfyUI-MelBandRoFormer/requirements.txt \
     -r ComfyUI-Easy-Use/requirements.txt \
     -r ComfyUI_YOLO_For_Multi_SDPose_Detection/requirements.txt \
-	-r ComfyUI-FishAudioS2/requirements.txt \
-	-r ComfyUI-PromptRelay/requirements.txt \
+    -r ComfyUI-FishAudioS2/requirements.txt \
+    -r ComfyUI-PromptRelay/requirements.txt \
     -r 10S-Comfy-nodes/requirements.txt
 
 # Add settings for lora manager 
@@ -175,8 +179,8 @@ PY
 # Clone the documentation repo and copy the required files in one layer.
 # Keeping these operations together prevents a stale clone layer from being reused
 # when a documentation filename changes upstream.
-RUN --mount=type=cache,target=/root/.cache/git \
-    git clone --depth=1 --filter=blob:none https://github.com/jalberty2018/comfyui-docs.git /comfyui-docs && \
+RUN set -eux; \
+    GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/jalberty2018/comfyui-docs.git /comfyui-docs && \
     mkdir -p /docs && \
     cp /comfyui-docs/RunPod_configuration.md /docs/ComfyUI_LTX_configuration.md && \
     cp /comfyui-docs/ComfyUI_LTX_custom_nodes.md /docs/ComfyUI_LTX_custom_nodes.md && \
@@ -201,7 +205,7 @@ EXPOSE 8188 9000
 # Licenses differ by component; see THIRD_PARTY_NOTICES.md.
 # Clear any inherited blanket license label for the assembled image.
 # Labels
-LABEL org.opencontainers.image.title="ComfyUI 0.34.0 for LTX-2.x inference" \
+LABEL org.opencontainers.image.title="ComfyUI 0.35.0 for LTX-2.x inference" \
       org.opencontainers.image.description="ComfyUI + internal manager + flash-attn + sageattention + onnxruntime-gpu + torch_generic_nms + code-server + civitai downloader + huggingface_hub + custom_nodes" \
       org.opencontainers.image.source="https://hub.docker.com/r/ls250824/run-comfyui-ltx" \
       org.opencontainers.image.licenses=""
