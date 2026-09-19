@@ -99,6 +99,19 @@ WORKDIR /ComfyUI/custom_nodes/ComfyUI-Easy-Use
 # remove onnxruntime
 RUN sed -i '/^onnxruntime/d' requirements.txt
 
+WORKDIR /ComfyUI/custom_nodes/ComfyUI-RMBG
+# Rewrite any top-level CPU ORT refs to GPU ORT
+RUN set -eux; \
+  for f in \
+    requirements.txt; do \
+      [ -f "$f" ] || continue; \
+      sed -i -E 's/^( *| *)(onnxruntime)([<>=].*)?(\s*)$/\1onnxruntime-gpu==1.22.*\4/i' "$f"; \
+    done
+
+RUN set -eux; \
+  grep -RniE '^[[:space:]]*onnxruntime([[:space:]]*[<>=!~].*)?[[:space:]]*$|^[[:space:]]*onnxruntime-gpu([[:space:]]*[<>=!~].*)?[[:space:]]*$' \
+    /ComfyUI/custom_nodes || true
+
 WORKDIR /ComfyUI/custom_nodes/ComfyUI-MelBandRoFormer
 # 1.0.2, last changed before 2026-06-04. Keep pinned because it imports rotary_embedding_torch at runtime.
 RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" fetch --depth=1 origin 92c86854e6654f4aacc97484471af95c98ea16d4 && \
