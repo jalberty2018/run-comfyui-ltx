@@ -65,16 +65,6 @@ RUN set -eux; \
 RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/BigStationW/ComfyUi-Scale-Image-to-Total-Pixels-Advanced.git
 RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/x3bits/ComfyUI-Power-Flow.git
 RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/PozzettiAndrea/ComfyUI-SAM3.git
-# Skip promotional media and example workflows; retain code and web node help.
-RUN set -eux; \
-    export GIT_TERMINAL_PROMPT=0; \
-    git -c http.version="$GIT_HTTP_VERSION" clone \
-      --depth=1 --filter=blob:none --no-checkout \
-      https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner.git; \
-    git -C ComfyUI-outputlists-combiner -c http.version="$GIT_HTTP_VERSION" \
-      sparse-checkout set --no-cone \
-      '/*' '!/gallery/' '!/media/' '!/workflows/'; \
-    git -C ComfyUI-outputlists-combiner -c http.version="$GIT_HTTP_VERSION" checkout
 RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/Lightricks/ComfyUI-LTXVideo.git
 RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/cubiq/ComfyUI_essentials.git
 RUN set -eux; GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/princepainter/ComfyUI-PainterLTXV2.git
