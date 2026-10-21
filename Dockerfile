@@ -11,15 +11,15 @@ COPY --chmod=644 configuration/comfy.settings.json user/default/comfy.settings.j
 # Copy ComfyUI ini settings
 COPY --chmod=644 configuration/config.ini user/__manager/config.ini
 
+# Reclone if NODEREBUILD is set
+ARG NODEREBUILD
+RUN echo "Rebuilding custom nodes: ${NODEREBUILD}"
+
 # Adding requirements internal comfyui-manager
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --no-cache-dir --root-user-action ignore -c /constraints.txt \
     matrix-nio \
     -r manager_requirements.txt
-
-# Reclone if NODEREBUILD is set
-ARG NODEREBUILD
-RUN echo "Rebuilding custom nodes: ${NODEREBUILD}"
 
 # Clone
 WORKDIR /ComfyUI/custom_nodes
