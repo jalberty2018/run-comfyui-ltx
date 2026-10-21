@@ -10,7 +10,7 @@
 - [Model provisioning](docs/ComfyUI_LTX_provisioning.md)
 - [Resources](docs/ComfyUI_LTX_resources.md)
 - [Image setup](docs/ComfyUI_LTX_image_setup.md)
-- [Environment variables](docs/ComfyUI_LTX_configuration.md)
+- [Environment variables](docs/RunPod_configuration.md)
 - [Hardware Requirements](docs/ComfyUI_LTX_hardware.md)
 
 ## Documentation on rozenlaan.site
@@ -80,14 +80,23 @@ age        # encryption
 runpodctl  # runpod pod management
 ```
 
-## Test/debug
+## Test environment & attentions
 
 ```bash
 python /workspace/test/test_pytorch_cuda.py
 python /workspace/test/test_flash.py
 python /workspace/test/test_sage.py
 python /workspace/test/test_torch_generic_nms.py
-python /workspace/test/test_llama_cpp.py
 python /workspace/test/test_environment.py
 python /workspace/test/test_environment_runpod.py
+```
+
+## Test LLM & VLM
+
+- [llama.cpp test models](docs/provisioning/hf_vlm.md)
+
+```bash
+python /workspace/test/test_llama_cpp_python.py
+python /workspace/test/test_llama_cpp_qwen_chat.py
+python /workspace/test/test_llama_cpp_qwen.py
 ```

@@ -1,6 +1,16 @@
 #!/bin/bash
+
+# Build
+export BUILD_TAG=21102026
+
+# Generate a fresh identifier for this script execution, including container restarts.
 echo "▶️ Pod run-comfyui-ltx started"
 echo "ℹ️ Wait until the message 🎉 Provisioning done, ready to create AI content 🎉 is displayed"
+
+# Privacy-friendly anonymous deployment diagnostics.
+# Records deployment events only.
+# No user data, prompts, generated content, account identifier, or persistent pod identifier is transmitted.
+wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--start-pod-${BUILD_TAG}.json" || true
 
 # Hugging Face CLI output tuned for RunPod plain logs.
 export NO_COLOR=1
@@ -41,6 +51,7 @@ HAS_GPU_RUNPOD=0
 if [[ -n "${RUNPOD_GPU_COUNT:-}" && "${RUNPOD_GPU_COUNT:-0}" -gt 0 ]]; then
   HAS_GPU_RUNPOD=1
   echo "✅ [GPU DETECTED] Found via RUNPOD_GPU_COUNT=${RUNPOD_GPU_COUNT}"
+  wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--runpod-gpu-detected-${BUILD_TAG}.json" || true
 else
   echo "⚠️ [NO GPU] No Runpod.io GPU detected."
 fi  
@@ -72,8 +83,26 @@ else
   echo "⚠️ [NO GPU] No GPU found via nvidia-smi"
 fi
 
+# Python, Torch CUDA check
+HAS_CUDA=0
+if command -v python >/dev/null 2>&1; then
+  if python - << 'PY' >/dev/null 2>&1
+import sys
+try:
+    import torch
+    sys.exit(0 if torch.cuda.is_available() else 1)
+except Exception:
+    sys.exit(1)
+PY
+  then
+    HAS_CUDA=1
+  fi
+else
+  echo "⚠️ Python not found – assuming no CUDA"
+fi
+
 # Move necessary files to workspace
-if [[ "$HAS_GPU" -eq 1 || "$HAS_GPU_RUNPOD" -eq 1 ]]; then  
+if [[ ( "$HAS_GPU" -eq 1 || "$HAS_GPU_RUNPOD" -eq 1 ) && "$HAS_CUDA" -eq 1 ]]; then
 	echo "ℹ️ [Moving necessary files to workspace] enabling Start/Stop/Restart pod without data loss."
 	echo "ℹ️ This takes some time depending on hardware used, even longer if the volume is encrypted."
 	
@@ -104,22 +133,17 @@ else
     echo "⚠️ WARNING: No GPU available, Code Server not started to limit memory use"
 fi
 
-# Python, Torch CUDA check
-HAS_CUDA=0
-if command -v python >/dev/null 2>&1; then
-  if python - << 'PY' >/dev/null 2>&1
-import sys
-try:
-    import torch
-    sys.exit(0 if torch.cuda.is_available() else 1)
-except Exception:
-    sys.exit(1)
-PY
-  then
-    HAS_CUDA=1
-  fi
+# Check whether NVENC can actually encode video before starting ComfyUI.
+echo "ℹ️  Checking NVENC video encoding"
+
+if timeout --kill-after=5s 30s "$VHS_FORCE_FFMPEG_PATH" \
+    -hide_banner -loglevel error -nostdin \
+    -f lavfi -i color=size=1280x720:rate=30 \
+    -frames:v 30 -an -c:v h264_nvenc -pix_fmt yuv420p -f null -; then
+    export NVENC_ENABLED_HOST=1
 else
-  echo "⚠️ Python not found – assuming no CUDA"
+    # Auto encoder selection checks presence, so failure must leave this unset.
+    unset NVENC_ENABLED_HOST
 fi
 
 # provisioning Models and loras CIVITAI
@@ -216,6 +240,7 @@ PY_SETTINGS
             echo "⚠️  WARNING: ComfyUI is still not responding after $MAX_TRIES attempts (~2 min)."
             echo "⚠️  SOLUTION: Use another region then $RUNPOD_DC_ID as vCPU speed is slow (normal count is around 20)"
             echo "⚠️  Continuing script anyway..."
+            wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++comfyui-timed-out-${BUILD_TAG}.json" || true
             break
         fi
 
@@ -293,6 +318,30 @@ show_code_server_login() {
 
 # Provisioning routines
 
+report_download_space_error() {
+    local message="${1,,}"
+    if [[ "$message" == *"no space left on device"* || "$message" == *"enospc"* ]]; then
+        echo "❌ [DOWNLOAD] No space left on device"
+        wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++no-space-left-${BUILD_TAG}.json" || true
+        return 0
+    fi
+    return 1
+}
+
+run_wget_download() {
+    local output
+    local exit_code
+    # Keep diagnostics in memory so reporting also works when the disk is full.
+    if output="$(LC_ALL=C wget -nv "$@" 2>&1)"; then
+        return 0
+    else
+        exit_code=$?
+    fi
+    printf '%s\n' "$output"
+    report_download_space_error "$output" || true
+    return "$exit_code"
+}
+
 run_hf_download() {
     local stall_timeout="${HF_DOWNLOAD_STALL_TIMEOUT:-300}"
     local kill_after="${HF_DOWNLOAD_KILL_AFTER:-30}"
@@ -326,6 +375,8 @@ run_hf_download() {
 
     echo "ℹ️ [DOWNLOAD] Stall watchdog: ${stall_timeout}s"
     echo "ℹ️ [DOWNLOAD] Kill grace period: ${kill_after}s"
+    echo "ℹ️ [DOWNLOAD] Updated every 5s"
+
 
     # Safely quote all arguments passed to: hf download
     # Force human output so progress bars remain enabled when the command is
@@ -337,6 +388,7 @@ run_hf_download() {
     # real download, but does not transfer the model itself.
     printf -v hf_dry_run_command '%q ' hf download --dry-run --format human "$@"
     dry_run_output="$(eval "$hf_dry_run_command" 2>&1 || true)"
+    report_download_space_error "$dry_run_output" || true
     if [[ "$dry_run_output" =~ totalling[[:space:]]+([0-9]+([.][0-9]+)?)([KMGTPE]?) ]]; then
         total_size_value="${BASH_REMATCH[1]}"
         total_size_unit="${BASH_REMATCH[3]}"
@@ -377,6 +429,7 @@ run_hf_download() {
     run_download_attempt() {
         local disable_xet="$1"
         local backend_name="$2"
+        local space_error_reported=0
 
         date +%s > "$activity_tmp_file"
         mv -f "$activity_tmp_file" "$last_activity_file"
@@ -500,6 +553,9 @@ run_hf_download() {
             mv -f "$activity_tmp_file" "$last_activity_file"
 
             printf '%s\n' "$line"
+            if (( space_error_reported == 0 )) && report_download_space_error "$line"; then
+                space_error_reported=1
+            fi
         done < <(
             stdbuf -oL tr '\r' '\n' <"$fifo" \
                 | sed -u -E \
@@ -547,6 +603,7 @@ run_hf_download() {
     fi
 
     echo "❌ [DOWNLOAD] Plain HTTP download failed with exit code ${exit_code}."
+    wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++failed-hf-download-${BUILD_TAG}.json" || true
     return "$exit_code"
 }
 
@@ -600,6 +657,7 @@ download_model_HF() {
 
     # -------- REAL FAILURE --------
     echo "❌ HF download failed (exit=$rc)"
+    wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++failed-hf-model-download-${BUILD_TAG}.json" || true
     sleep 1
     return 0
 }
@@ -666,8 +724,74 @@ download_generic_HF() {
 
     # -------- REAL FAILURE --------
     echo "❌ HF download failed (exit=$rc)"
+    wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++failed-hf-generic-download-${BUILD_TAG}.json" || true
     sleep 1
     return 0
+}
+
+# Generic downloads use the same GPU/VRAM prefixes as typed models.
+has_generic_HF_config() {
+    local prefix="$1" kind="$2" i model_var file_var
+    for i in $(seq 1 20); do
+        model_var="${prefix}${kind}${i}"
+        file_var="${prefix}${kind}_FILENAME${i}"
+        [[ -n "${!model_var}" ]] || continue
+        if [[ "$kind" == FULL || -n "${!file_var}" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+download_generic_HF_group() {
+    local prefix="$1" kind="$2" i model_var file_var dir_var include_var exclude_var
+    for i in $(seq 1 20); do
+        model_var="${prefix}${kind}${i}"
+        file_var="${prefix}${kind}_FILENAME${i}"
+        dir_var="${prefix}${kind}_DIR${i}"
+        include_var="${prefix}${kind}_INCLUDE${i}"
+        exclude_var="${prefix}${kind}_EXCLUDE${i}"
+        [[ -n "${!model_var}" ]] || continue
+        if [[ "$kind" == FILE ]]; then
+            [[ -n "${!file_var}" ]] || continue
+        else
+            file_var=""
+        fi
+        download_generic_HF "$model_var" "$file_var" "${!dir_var}" "$include_var" "$exclude_var"
+    done
+}
+
+provision_generic_HF() {
+    local kind prefix i model_var file_var dir_var include_var exclude_var legacy_prefix
+    for kind in FILE FULL; do
+        prefix="$HF_PREFIX"
+        if [[ "$HAS_GPU_BLACKWELL" -eq 1 ]] && has_generic_HF_config "$BLACKWELL_VRAM_PREFIX" "$kind"; then
+            prefix="$BLACKWELL_VRAM_PREFIX"
+        fi
+        download_generic_HF_group "$prefix" "$kind"
+
+        prefix="HF_MODEL_"
+        if [[ "$HAS_GPU_BLACKWELL" -eq 1 ]] && has_generic_HF_config "HF_MODEL_BLACKWELL_" "$kind"; then
+            prefix="HF_MODEL_BLACKWELL_"
+        fi
+        download_generic_HF_group "$prefix" "$kind"
+
+        # Preserve old names as the generic fallback when no new group is set.
+        if has_generic_HF_config "$prefix" "$kind"; then
+            continue
+        fi
+        legacy_prefix="HF_MODEL"
+        [[ "$kind" == FULL ]] && legacy_prefix="HF_FULL_MODEL"
+        for i in $(seq 1 20); do
+            model_var="${legacy_prefix}${i}"
+            file_var="${legacy_prefix}_FILENAME${i}"
+            dir_var="${legacy_prefix}_DIR${i}"
+            include_var="${legacy_prefix}_INCLUDE${i}"
+            exclude_var="${legacy_prefix}_EXCLUDE${i}"
+            [[ "$kind" == FULL ]] && file_var=""
+            download_generic_HF "$model_var" "$file_var" "${!dir_var}" "$include_var" "$exclude_var"
+        done
+    done
 }
 
 download_workflow() {
@@ -692,7 +816,7 @@ download_workflow() {
 
     echo "ℹ️ [DOWNLOAD] Fetching $filename ..."
 
-    if ! wget -q -P "$dest_dir" "$url"; then
+    if ! run_wget_download -P "$dest_dir" "$url"; then
         echo "⚠️ Download model workflow failed: $url"
         return 0
     fi
@@ -759,7 +883,7 @@ download_media() {
 
     # Download file
     echo "🎞️  [DOWNLOAD] Fetching $filename → ComfyUI/input ..."
-    if wget -q -O "$filepath" "$url"; then
+    if run_wget_download -O "$filepath" "$url"; then
         echo "✅ [DONE] Downloaded $filename"
     else
         echo "⚠️  [ERROR] Failed to download $url"
@@ -777,7 +901,8 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
 
     # provisioning Models and loras
     echo "📥 Provisioning models HF"
-	
+    wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--start-provisioning-models-workflows-${BUILD_TAG}.json" || true
+
     # categorie:  NAME:SUFFIX:MAP
     CATEGORIES_HF=(
       "VAE:VAE_FILENAME:vae"
@@ -797,31 +922,53 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
     # Huggingface download file depending on VRAM available to specified directory
 
     get_max_vram_gib() {
-      if ! command -v nvidia-smi >/dev/null 2>&1; then
-         echo 0
-         return
-      fi
+      # CUDA reports the visible MIG slice, whereas nvidia-smi's GPU query
+      # may return N/A or the parent GPU's memory. Use total, not free memory.
+      python - <<'PY_VRAM'
+import sys
 
-      nvidia-smi \
-         --query-gpu=memory.total \
-         --format=csv,noheader,nounits \
-        | awk 'BEGIN{m=0} {if($1>m) m=$1} END{print int(m/1024)}'
+try:
+    import torch
+
+    memory = max(
+        (torch.cuda.get_device_properties(i).total_memory
+         for i in range(torch.cuda.device_count())),
+        default=0,
+    )
+    if memory <= 0:
+        raise RuntimeError("no CUDA device with positive total memory")
+    gib = 1024 ** 3
+    # Preserve floor-based provisioning thresholds; round only the log display.
+    print(memory // gib, (memory + gib // 2) // gib)
+except Exception as exc:
+    print(f"VRAM detection failed: {exc}", file=sys.stderr)
+    sys.exit(1)
+PY_VRAM
     }
 
-    MAX_VRAM_GIB="$(get_max_vram_gib)"
+    if VRAM_VALUES="$(get_max_vram_gib)"; then
+        read -r MAX_VRAM_GIB MAX_VRAM_DISPLAY_GIB <<< "$VRAM_VALUES"
+    else
+        echo "⚠️ Cannot detect CUDA VRAM; using low-VRAM provisioning defaults"
+        wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++zero-vram-detected-${BUILD_TAG}.json" || true
+        MAX_VRAM_GIB=0
+        MAX_VRAM_DISPLAY_GIB=unknown
+    fi
     VRAM_THRESHOLD="${VRAM_THRESHOLD:-36}"
     VRAM_THRESHOLD_BLACKWELL="${VRAM_THRESHOLD_BLACKWELL:-40}"
 
     if (( MAX_VRAM_GIB > VRAM_THRESHOLD )); then
         HF_PREFIX="HF_MODEL_HVRAM_"
         if [[ "$HAS_GPU_BLACKWELL" -ne 1 ]]; then
-          echo "🟢 High VRAM detected (${MAX_VRAM_GIB} GB > ${VRAM_THRESHOLD} GB via VRAM_THRESHOLD)"
+          echo "🟢 High VRAM detected (${MAX_VRAM_DISPLAY_GIB} GiB, rounded; threshold ${VRAM_THRESHOLD} GiB via VRAM_THRESHOLD)"
+          wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--high-vram-detected-${BUILD_TAG}.json" || true
         fi
         export COMFYUI_VRAM_MODE=HIGH_VRAM
     else
        HF_PREFIX="HF_MODEL_LVRAM_"
        if [[ "$HAS_GPU_BLACKWELL" -ne 1 ]]; then
-         echo "🟡 Low VRAM detected (${MAX_VRAM_GIB} GB <= ${VRAM_THRESHOLD} GB via VRAM_THRESHOLD)"
+         echo "🟡 Low VRAM detected (${MAX_VRAM_DISPLAY_GIB} GiB, rounded; threshold ${VRAM_THRESHOLD} GiB via VRAM_THRESHOLD)"
+        wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--low-vram-detected-${BUILD_TAG}.json" || true
        fi
     fi
 
@@ -851,10 +998,12 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
     if [[ "$HAS_GPU_BLACKWELL" -eq 1 ]]; then
       if (( MAX_VRAM_GIB > VRAM_THRESHOLD_BLACKWELL )); then
         BLACKWELL_VRAM_PREFIX="HF_MODEL_HVRAM_BLACKWELL_"
-        echo "⚫ Blackwell high-VRAM models enabled (${MAX_VRAM_GIB} GB > ${VRAM_THRESHOLD_BLACKWELL} GB via VRAM_THRESHOLD_BLACKWELL)"
+        echo "⚫ Blackwell high-VRAM models enabled (${MAX_VRAM_DISPLAY_GIB} GiB, rounded; threshold ${VRAM_THRESHOLD_BLACKWELL} GiB via VRAM_THRESHOLD_BLACKWELL)"
+        wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--high-vram-blackwell-detected-${BUILD_TAG}.json" || true
       else
         BLACKWELL_VRAM_PREFIX="HF_MODEL_LVRAM_BLACKWELL_"
-        echo "⚫ Blackwell low-VRAM models enabled (${MAX_VRAM_GIB} GB <= ${VRAM_THRESHOLD_BLACKWELL} GB via VRAM_THRESHOLD_BLACKWELL)"
+        echo "⚫ Blackwell low-VRAM models enabled (${MAX_VRAM_DISPLAY_GIB} GiB, rounded; threshold ${VRAM_THRESHOLD_BLACKWELL} GiB via VRAM_THRESHOLD_BLACKWELL)"
+        wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--low-vram-blackwell-detected-${BUILD_TAG}.json" || true
       fi
 
       for cat in "${CATEGORIES_HF[@]}"; do
@@ -887,8 +1036,6 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
         if has_numbered_model_pair "$BLACKWELL_VRAM_PREFIX" "$NAME" "$SUFFIX"; then
           continue
         fi
-
-        echo "ℹ️ No ${BLACKWELL_VRAM_PREFIX}${NAME} models configured; using ${HF_PREFIX}${NAME}"
       fi
 
       for i in $(seq 1 20); do
@@ -908,8 +1055,6 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
         if has_numbered_model_pair "HF_MODEL_BLACKWELL_" "$NAME" "$SUFFIX"; then
           continue
         fi
-
-        echo "ℹ️ No HF_MODEL_BLACKWELL_${NAME} models configured; using HF_MODEL_${NAME}"
       fi
 	
       for i in $(seq 1 20); do
@@ -919,24 +1064,7 @@ if [[ "$HAS_COMFYUI" -eq 1 ]]; then
       done
     done
 
-    # Huggingface download file to specified directory independent on VRAM
-    for i in $(seq 1 20); do
-        VAR1="HF_MODEL${i}"
-        VAR2="HF_MODEL_FILENAME${i}"
-        DIR_VAR="HF_MODEL_DIR${i}"
-        INCLUDE_VAR="HF_MODEL_INCLUDE${i}"
-        EXCLUDE_VAR="HF_MODEL_EXCLUDE${i}"
-        download_generic_HF "${VAR1}" "${VAR2}" "${!DIR_VAR}" "${INCLUDE_VAR}" "${EXCLUDE_VAR}"
-    done
-	
-    # Huggingface download full model to specified directory independent on VRAM
-    for i in $(seq 1 20); do
-        VAR1="HF_FULL_MODEL${i}"
-        DIR_VAR="HF_FULL_MODEL_DIR${i}"
-        INCLUDE_VAR="HF_FULL_MODEL_INCLUDE${i}"
-        EXCLUDE_VAR="HF_FULL_MODEL_EXCLUDE${i}"
-        download_generic_HF "${VAR1}" "" "${!DIR_VAR}" "${INCLUDE_VAR}" "${EXCLUDE_VAR}"
-    done  
+    provision_generic_HF
 	 
     echo "📥 Provisioning workflows"
 
@@ -1037,19 +1165,22 @@ if [[ "$HAS_PROVISIONING" -eq 1 ]]; then
     show_code_server_login
 
     echo "🎉 Provisioning done, ready to create AI content 🎉"
+    wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--success-deployed-pod-${BUILD_TAG}.json" || true
 
 else
     echo "⚠️ Diagnostics, skipped provisioning ⚠️"
 
     if [[ "$HAS_GPU_RUNPOD" -eq 0 ]]; then
         echo "⚠️ Pod started without a runpod GPU"
+        wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++fail-gpu-${BUILD_TAG}.json" || true
     fi
 
     if [[ "$HAS_CUDA" -eq 0 ]]; then
         echo "❌ Pytorch CUDA driver error/mismatch/not available"
         if [[ "$HAS_GPU_RUNPOD" -eq 1 ]]; then
             echo "⚠️ [SOLUTION 1] Deploy pod on another region then $RUNPOD_DC_ID. ⚠️"
-			echo "⚠️ [SOLUTION 2] Specify CUDA 12.8 using the runpod console filter. ⚠️"
+			echo "⚠️ [SOLUTION 2] Specify CUDA 13.0 using the runpod console filter. ⚠️"
+            wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++fail-cuda-${BUILD_TAG}.json" || true
         fi
     fi
 
@@ -1057,18 +1188,16 @@ else
         echo "❌ ComfyUI is not online (extreme slow vCPU's)"
         echo "⚠️ [SOLUTION 1] restart pod ⚠️"
 		echo "⚠️ [SOLUTION 2] Deploy pod on another region then ${RUNPOD_DC_ID:-unknown} ⚠️"
+        wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/++fail-comfyui-${BUILD_TAG}.json" || true
     fi
 fi
 
 echo "📘 Tutorial: https://comfyui.rozenlaan.site/ComfyUI_tutorial/"
 
-# Check whether NVENC can actually encode video
-echo "📘 Checking NVENC video encoding (h264_nvenc)..."
+# Report the NVENC result recorded before provisioning.
+echo "ℹ️  NVENC video encoding status"
 
-if timeout --kill-after=5s 30s "$VHS_FORCE_FFMPEG_PATH" \
-    -hide_banner -loglevel error -nostdin \
-    -f lavfi -i color=size=1280x720:rate=30 \
-    -frames:v 30 -an -c:v h264_nvenc -pix_fmt yuv420p -f null -; then
+if [[ "${NVENC_ENABLED_HOST:-}" == "1" ]]; then
     echo "✅ NVENC video encoding (h264_nvenc) is available on this host."
 else
     echo "⚠️: NVENC GPU video encoding test failed on this host. Use standard CPU libx264 for video encoding." >&2
@@ -1109,4 +1238,5 @@ fi
 
 # Keep the container running
 echo "ℹ️ End script"
+wget -q --timeout=5 --tries=1 -O /dev/null "https://provisioning.rozenlaan.site/ltx/--end-start-script-pod-${BUILD_TAG}.json" || true
 exec sleep infinity

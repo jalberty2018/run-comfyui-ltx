@@ -172,8 +172,10 @@ if old in s:
     s = s.replace(old, new)
     p.write_text(s)
     print("✅ Patched ComfyUI-LTXVideo pyramid_blending.py")
-elif "from torch.nn.functional import pad" in s:
-    print("ℹ️ Patch already applied")
+elif "from torch.nn.functional import pad" in s or (
+    "import torch.nn.functional as F" in s and "image = F.pad(" in s
+):
+    print("ℹ️ Upstream padding fix already applied")
 else:
     raise SystemExit("❌ Expected import block not found; upstream file changed")
 
@@ -195,7 +197,7 @@ RUN echo "Rebuilding documentation: ${DOCREBUILD}"
 RUN set -eux; \
     GIT_TERMINAL_PROMPT=0 git -c http.version="$GIT_HTTP_VERSION" clone --depth=1 https://github.com/jalberty2018/comfyui-docs.git /comfyui-docs && \
     mkdir -p /docs && \
-    cp /comfyui-docs/RunPod_configuration.md /docs/ComfyUI_LTX_configuration.md && \
+    cp /comfyui-docs/RunPod_configuration.md /docs/RunPod_configuration.md && \
     cp /comfyui-docs/ComfyUI_LTX_custom_nodes.md /docs/ComfyUI_LTX_custom_nodes.md && \
     cp /comfyui-docs/ComfyUI_LTX_hardware.md /docs/ComfyUI_LTX_hardware.md && \
     cp /comfyui-docs/ComfyUI_LTX_image_setup.md /docs/ComfyUI_LTX_image_setup.md && \
